@@ -31,5 +31,11 @@
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
+	
+	
+	<!-- 가공처리할 SessionFactory 객체에 Mapper의 정보를 주입하기 위한 DAO객체의 위치를 설정...(주소 틀리면 404)-->		
+	<mybatis-spring:scan base-package="com.spring.javaProjectS.dao"/>
+		
+		
 		
 </beans>

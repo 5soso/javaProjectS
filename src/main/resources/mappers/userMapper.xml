@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userNS">
+	<select id="getUserList" resultType="com.spring.javaProjectS.vo.UserVO"> <!-- select는 값을 넘겨야하니까 resultType을 꼭 적어줘야 한다.  -->
+		select * from user order by idx desc;
+	</select>
+	
+	<select id="getUserSearch" resultType="com.spring.javaProjectS.vo.UserVO"> 
+		select * from user where name like concat('%',#{name},'%') order by idx desc;
+	</select>
+	
+	<delete id="setUserDelete">
+		delete from user where idx = #{idx}; <!-- MyBatis는 넘어오는 인자 표기법이 ${}가 아니라 #{}이다.  -->
+	</delete>
+	
+</mapper>
