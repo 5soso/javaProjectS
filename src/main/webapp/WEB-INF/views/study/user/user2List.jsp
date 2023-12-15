@@ -56,8 +56,8 @@
   	}
   	
   	function userUpdate(idx,name,age,address) {
-  		$("#myModal .modal-body #idx").val(idx); //모달에 있는 아이디의 값을 읽어온다. (name 명확하게 준다.)
-  		$("#myModal .modal-body #name").val(name);
+  		$("#myModal .modal-body #idx").val(idx); //모달에 있는 아이디의 값을 읽어온다. 
+  		$("#myModal .modal-body #name").val(name); // name다른 곳에서 사용하고 있음. 어디에서 쓰는 name인지 명확하게 준다.
   		$("#myModal .modal-body #age").val(age);
   		$("#myModal .modal-body #address").val(address);
   	}
@@ -69,25 +69,40 @@
   </script>
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/include/nav.jsp"></jsp:include>
-<jsp:include page="/WEB-INF/views/include/slide2.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/include/nav.jsp" />
+<jsp:include page="/WEB-INF/views/include/slide2.jsp" />
 <p><br/></p>
 <div class="container">
   <h2>회 원 리 스 트 2</h2>
-  <div class="row">
-  	<div class="col">
+  <%-- 
+  <div class="row"> <!-- class="row" 뜻? -->
+  	<div class="col-7"> <!-- 전체 합쳐서 12개 나오면 됨.  -->
   		<input type="button" value="회원가입폼" onclick="fNewForm()" id="fNewFormBtn" class="btn btn-primary btn-sm" />
   		<input type="button" value="회원가입폼닫기" onclick="fNewFormClose()" id="fNewFormCloseBtn" class="btn btn-info btn-sm" />
   	</div>
-  	<div class="col text-right">
-	  	개별검색 : 
-	  	<input type="text" name="name" value="${name}" id="name" />
-	  	<input type="button" value="검색" onclick="nameSearch()" class="btn btn-success btn-sm mb-2" />
+  	<div class="col-5">
+	  	 <div class="input-group">
+		  	<input type="text" name="name" value="${name}" id="name" style="margin: 7px;"/>
+		  	<div class="input-group-append"><input type="button" value="검색" onclick="nameSearch()" class="btn btn-success mb-2" /></div>
+  		</div>
   	</div>
+  </div>
+  --%>
+  <div class="row">
+    <div class="col-7">
+      <input type="button" value="회원가입폼" onclick="fNewForm()" id="fNewFormBtn" class="btn btn-primary btn-sm mb-2"/>
+      <input type="button" value="회원가입폼닫기" onclick="fNewFormClose()" id="fNewFormCloseBtn" class="btn btn-info btn-sm mb-2"/>
+    </div>
+    <div class="col-5">
+	    <div class="input-group">
+	      <input type="text" name="name" id="name" value="${name}" class="form-control mb-2">
+	      <div class="input-group-append"><input type="button" value="이름검색" onclick="nameSearch()" class="btn btn-success btn-sm mb-2"/></div>
+	    </div>
+    </div>
   </div>
   <div id="demo"></div>
   <table class="table table-hover">
-  	<tr class="table table-dark text-dark">
+  	<tr class="table table-dark text-dark text-center">
   		<th>번호</th>
   		<th>아이디</th>
   		<th>성명</th>
@@ -96,7 +111,7 @@
   		<th>비고</th>
   	</tr>
   	<c:forEach var="vo" items="${vos}" varStatus="st">
-	  	<tr>
+	  	<tr class="text-center">
 	  		<td>${vo.idx}</td>
 	  		<td>${vo.mid}</td>
 	  		<td>${vo.name}</td>

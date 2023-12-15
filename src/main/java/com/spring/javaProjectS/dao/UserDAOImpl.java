@@ -27,7 +27,7 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public List<UserVO> getUserSearch(String name) {
-		List<UserVO> vos = sqlSession.selectList("userNS.getUserSearch" , name); //like 연산자 쓸 거라서 여러개 옴 (하나만 출력할 때는 seletListOn 씀)
+		List<UserVO> vos = sqlSession.selectList("userNS.getUserSearch" , name); //like 연산자 쓸 거라서 여러개 옴?.. (하나만 출력할 때는 seletListOne 씀 -- SqlSession Template)
 		return vos;
 	}
 	

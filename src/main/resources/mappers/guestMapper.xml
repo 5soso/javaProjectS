@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javaProjectS.dao.GuestDAO">
+	<select id="guestList" resultType="com.spring.javaProjectS.vo.GuestVO">
+		select * from guest order by idx desc limit #{startIndexNo}, #{pageSize};
+	</select>
+	<select id="getTotRecCnt" resultType="int">
+		select count(*) from guest;
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	<insert id="guestInput">
+		insert into guest values(default,#{vo.name},#{vo.content},#{vo.email},#{vo.homePage},default,#{vo.hostIp});
+	</insert>
+	
+	
+	
+	
+	
+	
+	
+	
+	<delete id="guestDelete">
+		delete from guest where idx = #{idx};
+	</delete>
+</mapper>

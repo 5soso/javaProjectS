@@ -11,6 +11,7 @@ public interface UserService {
 	public int setUserDelete(int idx); // () 변수명 꼭 확인하기
 
 	public List<UserVO> getUserSearch(String name);
+	
 
 	public List<UserVO> getUser2List();
 

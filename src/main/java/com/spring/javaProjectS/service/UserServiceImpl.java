@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
 	User2DAO user2DAO;
 
 	@Override
-	public List<UserVO> getUserList() { //오버라이드 한 후에, 1번 : 메소드이름 복사붙여넣기
+	public List<UserVO> getUserList() { //오버라이드 한 후에, 1번 : 메소드이름 복사붙여넣기 (3번에)
 		return userDAO.getUserList(); //3번 : 2.1
 	}
 

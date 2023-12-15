@@ -31,7 +31,7 @@
   <div>
   	개별검색 : 
   	<input type="text" name="name" id="name" />
-  	<input type="button" value="검색" onclick="nameSearch()" class="btn btn-success" />
+  	<input type="button" value="검색" onclick="nameSearch()" class="btn btn-success mb-2" />
   </div>
   <table class="table table-hover">
   	<tr class="table table-dark text-dark">
@@ -55,7 +55,7 @@
 		<tr><td colspan="6" class="m-0 p-0"></td></tr>
   </table>
   <br/>
-  <div><a href="${ctp}/" class="btn btn-warning">돌아가기</a></div>
+  <div><a href="${ctp}/" class="btn btn-warning">돌아가기</a></div> <!-- <a href="${ctp}/" 여기서 이게 왜 home으로 가는지? -->
 </div>
 <p><br/></p>
 <jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>

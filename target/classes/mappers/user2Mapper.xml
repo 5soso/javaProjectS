@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.javaProjectS.dao.User2DAO"> <!-- DAO에서 바로 Mapper로 오기 때문에 정확한 경로명 써주기 -->
+  <!-- 검색 select -->
   <select id="getUser2List" resultType="com.spring.javaProjectS.vo.UserVO">
   	select * from user order by idx desc;
   </select>
@@ -9,8 +10,28 @@
   	<!-- select * from user where name = #{name} order by idx desc; -->
   	select * from user where name like concat('%',#{name},'%') order by idx desc;
   </select>
+    
+  <select id="getUser2SearchMid" resultType="com.spring.javaProjectS.vo.UserVO">
+  	select * from user where mid like concat('%',#{mid},'%') order by idx desc;
+  </select>
+  
+  <select id="getUserSearchVO" resultType="com.spring.javaProjectS.vo.UserVO">
+  	select * from user where mid = #{mid};
+  </select>
+
   
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <!-- 추가 insert -->
   <insert id="setUser2Input">
   	insert into user values (default, #{vo.mid},#{vo.name},#{vo.age},#{vo.address});
   </insert>
@@ -20,7 +41,15 @@
   
   
   
-	<!-- (update 테이블명 set 필드명 ='변경내용' where ___조건___;) -->
+  
+  
+  
+  
+  
+  
+  
+  
+	<!-- 수정 update 테이블명 set 필드명 ='변경내용' where ___조건___; -->
   <update id="setUser2Update">
   	update user set name=#{vo.name}, age=#{vo.age}, address=#{vo.address} where idx = #{vo.idx};
   </update>
@@ -30,6 +59,15 @@
   
   
   
+  
+  
+  
+  
+  
+  
+  
+  
+  <!-- 삭제 delete -->
   <delete id="setUser2Delete">
   	delete from user where idx = #{idx};
   </delete>

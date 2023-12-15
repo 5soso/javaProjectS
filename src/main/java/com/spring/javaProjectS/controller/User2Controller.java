@@ -13,7 +13,7 @@ import com.spring.javaProjectS.vo.UserVO;
 
 @Controller
 @RequestMapping("/user2")
-public class User2ControllerM {
+public class User2Controller {
 
 	@Autowired
 	UserService userService;
