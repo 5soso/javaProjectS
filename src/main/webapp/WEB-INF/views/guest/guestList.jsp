@@ -59,13 +59,13 @@
 		  <!-- 페이지처리 시작(이전/다음) -->
   	  <td class="text-right">
   	    <c:if test="${pag > 1}">
-  	    	<a href="${ctp}/GuestList?pag=1&pageSize=${pageSize}" title="첫페이지">◁◁</a>
-  	    	<a href="${ctp}/GuestList?pag=${pag-1}&pageSize=${pageSize}" title="이전페이지">◀</a>
+  	    	<a href="guestList?pag=1&pageSize=${pageSize}" title="첫페이지">◁◁</a>
+  	    	<a href="guestList?pag=${pag-1}&pageSize=${pageSize}" title="이전페이지">◀</a>
   	    </c:if>
   	    ${pag}/${totPage}
   	    <c:if test="${pag < totPage}">
-  	    	<a href="${ctp}/GuestList?pag=${pag+1}&pageSize=${pageSize}" title="다음페이지">▶</a>
-  	    	<a href="${ctp}/GuestList?pag=${totPage}&pageSize=${pageSize}" title="마지막페이지">▷▷</a>
+  	    	<a href="guestList?pag=${pag+1}&pageSize=${pageSize}" title="다음페이지">▶</a>
+  	    	<a href="guestList?pag=${totPage}&pageSize=${pageSize}" title="마지막페이지">▷▷</a>
   	    </c:if>
   	  </td>
   	  <!-- 페이지처리 끝(이전/다음) -->

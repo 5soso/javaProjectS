@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,7 +21,7 @@ public class StudyController {
 	@Autowired
 	StudyService studyService;
 	
-	
+
 	@RequestMapping(value="/ajax/ajaxForm", method = RequestMethod.GET)
 	public String ajaxFormGet() {
 		return "study/ajax/ajaxForm";
@@ -39,7 +40,7 @@ public class StudyController {
  	public String ajaxTest2Post(String str) {
 		//System.out.println("str : " + str);
 		
-		return str+"";
+		return str;
 	}
 	
 	@RequestMapping(value="/ajax/ajaxTest3_1", method = RequestMethod.GET)
@@ -54,7 +55,7 @@ public class StudyController {
 		//strArray  = studyService.getCityStringArray(dodo);
 		//return strArray;
 		
-		/* 위의 세줄을 한줄로 축약, 동적배열처럼 만들어진다. 메소드 타입 맞춰주기(String[])*/
+		/* 위의 세줄을 한줄로 축약, 동적배열처럼 만들어진다. 메소드 타입 맞추기(String[])*/
 		return studyService.getCityStringArray(dodo);
 	}
 	
