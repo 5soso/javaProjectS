@@ -14,7 +14,9 @@
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/js/**" location="/resources/js/" />
 	<resources mapping="/images/**" location="/resources/images/" />
+	<resources mapping="/member/**" location="/resources/data/member/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -25,6 +27,7 @@
 	<!-- 컴포넌트를 찾음 -->
 	<context:component-scan base-package="com.spring.javaProjectS" /> <!-- 패키지명 바꾸면서(controller붙임) base-package명이 자동으로 바뀜. controller 지워야함 -->
 	
-	
+	<!--  BCryptPasswordEncoder 객체 사용을 위한 Bean 등록  -->
+	<beans:bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 	
 </beans:beans>

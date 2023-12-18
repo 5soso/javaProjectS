@@ -32,10 +32,24 @@
 		<constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
 	
-	
 	<!-- 가공처리할 SessionFactory 객체에 Mapper의 정보를 주입하기 위한 DAO객체의 위치를 설정...(주소 틀리면 404)-->		
 	<mybatis-spring:scan base-package="com.spring.javaProjectS.dao"/>
 		
-		
+	<!-- mail처리를 위한 Bean 등록하기 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="sojung8497@gmail.com" />
+		<property name="password" value="pmkxrdebyufvieyq" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.debug">true</prop> <!-- 검사되듯이 스캔됨 첫번째 router까지 감 -->
+				<prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+				<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
+			</props>		
+		</property>
+	</bean>
 		
 </beans>

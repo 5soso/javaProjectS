@@ -182,6 +182,7 @@
 	    <version>4.2.3.RELEASE</version>
 		</dependency>
 		
+		
 		<!-- ajax처리를 위한 라이브러리 2개(검색어 : jackson mapper) -->
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
@@ -197,7 +198,20 @@
 		</dependency>
 		
 		
+		<!-- mail전송을 위한 라이브러리 : _개 -->
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
+		<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-context-support</artifactId>
+	    <version>${org.springframework-version}</version> <!-- version 변수로 받기  -->
+		</dependency>
 		
+		<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+		<dependency>
+	    <groupId>javax.mail</groupId>
+	    <artifactId>mail</artifactId>
+	    <version>1.4.7</version>
+		</dependency>
 		
 		
 		
