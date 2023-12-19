@@ -10,29 +10,29 @@
   <title>memberMain.jsp</title>
   <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
   <script>
-  	'use strict';
-  	
-  	function chatInput() {
-  		let chat = $("#chat").val();
-  		if(chat.trim() != "") {
-				$.ajax({
-					url : "${ctp}/memberMessageInput.mem",
-					type : "post",
-					data : {chat : chat},
-					error : function() {
-						alert("전송오류");
-					}
-				});  			
-  		}
-  	}
-  	
-  	$(function() {
-  		$("#chat").on("keydown", function(e) {
-  			if(e.keyCode == 13) {
-  				chatInput();
-  			}
-  		});
-  	});
+    'use strict';
+    
+    function chtInput() {
+    	let chat = $("#chat").val();
+    	if(chat.trim() != "") {
+    		$.ajax({
+    			url  : "${ctp}/memberMessageInput.mem",
+    			type : "post",
+    			data : {chat : chat},
+    			error:function() {
+    				alert("전송오류!");
+    			}
+    		});
+    	}
+    }
+    
+    $(function() {
+    	$("#chat").on("keydown", function(e) {
+    		if(e.keyCode == 13) {
+    			chtInput();
+    		}
+    	});
+    });
   </script>
 </head>
 <body>
@@ -49,21 +49,23 @@
   </c:if>
   <hr/>
   <!-- 실시간 DB 채팅 -->
-  <div style="width: 500px">
-  	<form name="chatForm">
-			<label for="chat"><b>실시간 대화방</b></label>
-			<iframe src="${ctp}/include/memberMessage.jsp" width="100%" height="250px" class="border"></iframe>
-			<div class="input-group mt-1">
-				<input type="text" name="chat" id="chat" class="form-control" placeholder="대화내용을 입력하세요." autofocus />
-				<div class="input-group-append">
-					<input type="button" value="글동록" onclick="chatInput()" class="btn btn-success" />
-				</div>
-			</div>  	
-  	</form>
+  <%-- 
+  <div style="width:500px">
+    <form name="chatForm">
+      <label for="chat"><b>실시간 대화방</b></label>
+      <iframe src="${ctp}/include/memberMessage.jsp" width="100%" height="250px" class="border"></iframe>
+      <div class="input-group mt-1">
+        <input type="text" name="chat" id="chat" class="form-control" placeholder="대화내용을 입력하세요" autofocus />
+        <div class="input-group-append">
+          <input type="button" value="글등록" onclick="chtInput()" class="btn btn-success"/>
+        </div>
+      </div>
+    </form>
   </div>
   <hr/>
   <div><img src="${ctp}/member/noimage.jpg" width="200px"/></div>
   <hr/>
+   --%>
   <div>
   	<p>현재 <font color="blue"><b>${sNickName}(${strLevel})</b></font>님이 로그인 중이십니다.</p>
   	<p>총 방문횟수 : ${mVo.visitCnt}회</p>

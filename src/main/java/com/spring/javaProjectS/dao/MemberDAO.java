@@ -12,8 +12,12 @@ public interface MemberDAO {
 
 	public int setMemberJoinOk(@Param("vo") MemberVO vo);
 
-	public MemberVO getMemberPwdCheck(@Param("mid") String mid);
+	public int setUserDel(@Param("mid") String mid);
 
-	public int setMemberPwdUpdate(@Param("mid") String mid, @Param("pwd") String pwd);
-	
+	public int setPwdChangeOk(@Param("mid") String mid, @Param("pwd") String pwd);
+
+	public int setMemberUpdateOk(@Param("vo") MemberVO vo);
+
+	public void setMemberPasswordUpdate(@Param("mid") String mid, @Param("pwd") String pwd);
+
 }

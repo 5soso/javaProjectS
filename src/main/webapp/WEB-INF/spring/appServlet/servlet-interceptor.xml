@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- interceptor 설정 -->
+	<beans:bean id="level0Interceptor" class="com.spring.javaProjectS.interceptor.Level0Interceptor" />	
+	<beans:bean id="level1Interceptor" class="com.spring.javaProjectS.interceptor.Level1Interceptor" />	
+	<beans:bean id="level2Interceptor" class="com.spring.javaProjectS.interceptor.Level2Interceptor" />	
+	<beans:bean id="level3Interceptor" class="com.spring.javaProjectS.interceptor.Level3Interceptor" />	
+	
+	<interceptors>
+		<interceptor> <!-- 비회원(99)  -->
+			<mapping path="/member/**" />
+			<mapping path="/board/boardList" />
+			<exclude-mapping path="/member/memberLogin" />
+			<exclude-mapping path="/member/memberLogout" />
+			<exclude-mapping path="/member/memberIdCheck" />
+			<exclude-mapping path="/member/memberNickCheck" />
+			<exclude-mapping path="/member/memberJoin" />
+			<exclude-mapping path="/guest/**" />
+			<exclude-mapping path="/message/**" />
+			<beans:ref bean="level3Interceptor" />
+		</interceptor>
+		
+		<interceptor> <!-- 정회원(2)  -->
+			<mapping path="/board/**" />
+			<mapping path="/pds/**" />
+			<exclude-mapping path="/pds/pdsDownload" />
+			<exclude-mapping path="/board/boardList" />
+			<beans:ref bean="level2Interceptor" />
+		</interceptor>
+		
+		<interceptor> <!-- 우수회원(1)  -->
+			<mapping path="/pds/**" />
+			<exclude-mapping path="/pds/pdsList" />
+			<exclude-mapping path="/pds/pdsDownload" />
+			<beans:ref bean="level1Interceptor" />
+		</interceptor>
+		
+		<interceptor>  <!-- 관리자(0) -->
+			<mapping path="/admin/**" />
+			<beans:ref bean="level0Interceptor" />
+		</interceptor>
+	</interceptors>
+</beans:beans>

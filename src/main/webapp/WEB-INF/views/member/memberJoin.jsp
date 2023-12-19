@@ -151,31 +151,29 @@
     	let mid = myform.mid.value;
     	
     	if(mid.trim() == "" || mid.length < 4 || mid.length > 20) {
-    		alert("아이디를 확인하세요!(아이디는 4~20자리 이내.)");
+    		alert("아이디를 확인하세요(아이디는 4~20자 이내)");
     		myform.mid.focus();
     		return false;
     	}
     	
     	$.ajax({
-    		type : "post",
-    		url  : "${ctp}/member/memberIdCheck",
-    		data : {mid : mid},
-    		success : function(res) {
+    		type  : "post",
+    		url   : "${ctp}/member/memberIdCheck",
+    		data  : {mid : mid},
+    		success:function(res) {
     			if(res == "1") {
-    				alert("이미 사용중인 아이디 입니다. 아이디를 다시 입력하세요.");
-    				idCheckSw = 0;
+    				alert("이미 사용중인 아이디 입니다. 다시 아이디를 입력하세요.");
     				$("#mid").focus();
     			}
     			else {
-    				alert("사용가능한 아이디입니다.");
+    				alert("사용 가능한 아이디 입니다.");
     				idCheckSw = 1;
   	    		myform.mid.readOnly = true;
   	    		$("#pwd").focus();
     			}
     		},
     		error : function() {
-    			//alert(mid);
-    			alert("전송오류");
+    			alert("전송오류!");
     		}
     	});
     }
@@ -185,30 +183,29 @@
     	let nickName = myform.nickName.value;
     	
     	if(nickName.trim() == "" || nickName.length < 2 || nickName.length > 20) {
-    		alert("닉네임을 확인하세요!(닉네임은 2~20자 이내)");
+    		alert("닉네임을 확인하세요(닉네임은 2~20자 이내)");
     		myform.nickName.focus();
     		return false;
     	}
     	
     	$.ajax({
-    		type : "post",
-    		url  : "${ctp}/member/memberNickCheck",
-    		data : {nickName : nickName},
-    		success : function(res) {
+    		type  : "post",
+    		url   : "${ctp}/member/memberNickCheck",
+    		data  : {nickName : nickName},
+    		success:function(res) {
     			if(res == "1") {
-    				alert("이미 사용중인 닉네임 입니다. 닉네임을 다시 입력하세요.");
-    				nickCheckSw = 0;
+    				alert("이미 사용중인 닉네임 입니다. 다시 닉네임을 입력하세요.");
     				$("#nickName").focus();
     			}
     			else {
-    				alert("사용가능한 닉네임입니다.");
+    				alert("사용 가능한 닉네임 입니다.");
     				nickCheckSw = 1;
   	    		myform.nickName.readOnly = true;
   	    		$("#name").focus();
     			}
     		},
     		error : function() {
-    			alert("전송오류");
+    			alert("전송오류!");
     		}
     	});
     }

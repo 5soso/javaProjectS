@@ -38,7 +38,7 @@
     	}
     	
     	$.ajax({
-    		url  : "memberEmailSearch",
+    		url  : "memberEmailSearch.mem",
     		type : "post",
     		data : {email : email},
     		success:function(res) {
@@ -87,11 +87,16 @@
     	}
     	
     	$.ajax({
-    		url  : "memberPasswordSearch",
+    		url  : "${ctp}/member/memberPasswordSearch",
     		type : "post",
     		data : query,
     		success:function(res) {
-    			passwordShow.innerHTML = "결과메세지 : " + res;
+    			if(res == "1") {
+    				alert("새로운 비밀번호가 회원님 메일로 발송 되었습니다.");
+    			}
+    			else {
+    				alert("등록하신 정보가 잘못되었습니다. 확인후 다시 전송하세요.");
+    			}
     		},
     		error : function() {
     			alert("전송오류!");
@@ -105,7 +110,7 @@
 <jsp:include page="/WEB-INF/views/include/slide2.jsp" />
 <p><br/></p>
 <div class="container">
-  <form name="loginForm" method="post" >
+  <form name="loginForm" method="post">
   	<table class="table table-bordered m-0">
   	  <tr>
   	    <td colspan="2" class="text-center"><h2>회원 로그인</h2></td>
@@ -182,11 +187,6 @@
 	  	    <td colspan="2">
 	  	      <input type="button" value="새비밀번호발급" onclick="passwordFind()" class="btn btn-info" />
 	  	    </td>
-	  	  </tr>
-	  	</table>
-	  	<table class="table table-borderless">
-	  	  <tr>
-	  	    <td><div id="passwordShow"></div></td>
 	  	  </tr>
 	  	</table>
   	</div>
