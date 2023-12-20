@@ -2,15 +2,20 @@ package com.spring.javaProjectS.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MessageController {
 
 	@RequestMapping(value="/message/{msgFlag}", method = RequestMethod.GET)
-	public String msgGet(@PathVariable String msgFlag, String mid, Model model) {
+	public String msgGet(@PathVariable String msgFlag, String mid, Model model,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "5", required = false) int pageSize,
+			@RequestParam(name="idx", defaultValue = "0", required = false) int idx) {
 		
 		if(msgFlag.equals("userDeleteOk")) {
 			model.addAttribute("msg", "user가 삭제 되었습니다.");
@@ -121,6 +126,22 @@ public class MessageController {
 			model.addAttribute("msg", "글등록에 실패하였습니다.");
 			model.addAttribute("url", "board/boardInput");
 		}
+		else if(msgFlag.equals("boardDeleteOk")) {
+			model.addAttribute("msg", "글이 삭제되었습니다.");
+			model.addAttribute("url", "board/boardList?pag="+pag+"&pageSize="+pageSize); 
+		}
+		else if(msgFlag.equals("boardDeleteNo")) {
+			model.addAttribute("msg", "게시글 삭제 실패하였습니다.");
+			model.addAttribute("url", "board/boardContent?idx="+idx+"&pag="+pag+"&pageSize="+pageSize); 
+		}
+		else if(msgFlag.equals("boardUpdateOk")) {
+			model.addAttribute("msg", "수정되었습니다.");
+			model.addAttribute("url", "board/boardContent?idx="+idx+"&pag="+pag+"&pageSize="+pageSize);
+		}
+		else if(msgFlag.equals("boardUpdateNo")) {
+			model.addAttribute("msg", "수정 실패하였습니다.");
+			model.addAttribute("url", "board/boardUpdate?idx="+idx+"&pag="+pag+"&pageSize="+pageSize); 
+		}
 		/* interceptor */
 		else if(msgFlag.equals("adminNo")) {
 			model.addAttribute("msg", "관리자만 접속할 수 있습니다.");
@@ -132,8 +153,9 @@ public class MessageController {
 		}
 		else if(msgFlag.equals("memberNo")) {
 			model.addAttribute("msg", "로그인후 사용가능합니다.");
-			model.addAttribute("url", "memeber/memberLogin"); 
+			model.addAttribute("url", "member/memberLogin"); 
 		}
+		
 		
 		
 		return "include/message";

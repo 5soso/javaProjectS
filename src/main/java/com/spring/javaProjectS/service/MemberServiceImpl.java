@@ -1,5 +1,7 @@
 package com.spring.javaProjectS.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +50,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void setMemberPasswordUpdate(String mid, String pwd) {
 		memberDAO.setMemberPasswordUpdate(mid, pwd);
+	}
+
+	@Override
+	public List<MemberVO> getMemberEmailSearch(String email) {
+		return memberDAO.getMemberEmailSearch(email);
 	}
 	
 }

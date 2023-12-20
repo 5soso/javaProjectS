@@ -39,7 +39,7 @@ public class HomeController {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=utf-8");
 	
-		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/ckeditor/board/"); //왜 처음에 session?
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/ckeditor/"); //왜 처음에 session?
 		String oFileName = upload.getOriginalFilename();
 		
 		UUID uid = UUID.randomUUID();
@@ -54,7 +54,7 @@ public class HomeController {
  		fos.write(bytes);
 		
 		PrintWriter out = response.getWriter();
-		String fileUrl = request.getContextPath() + "/data/ckeditor/board/" + oFileName; /*'/board' 이부분 변수로 지정하기 */
+		String fileUrl = request.getContextPath() + "/data/ckeditor/" + oFileName; /* ckeditor 폴더에 업로드하는 모든 파일이 올라간다.*/
 		out.println("{\"originalFilename\":\""+oFileName+"\",\"uploaded\":1,\"url\":\""+fileUrl+"\"}");
 		
 		

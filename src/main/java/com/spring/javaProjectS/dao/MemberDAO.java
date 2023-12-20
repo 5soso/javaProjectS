@@ -1,5 +1,7 @@
 package com.spring.javaProjectS.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.spring.javaProjectS.vo.MemberVO;
@@ -19,5 +21,7 @@ public interface MemberDAO {
 	public int setMemberUpdateOk(@Param("vo") MemberVO vo);
 
 	public void setMemberPasswordUpdate(@Param("mid") String mid, @Param("pwd") String pwd);
+
+	public List<MemberVO> getMemberEmailSearch(@Param("email") String email);
 
 }

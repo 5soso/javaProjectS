@@ -3,15 +3,44 @@
 <mapper namespace="com.spring.javaProjectS.dao.BoardDAO">
 
 	<select id="getBoardList" resultType="com.spring.javaProjectS.vo.BoardVO">
-		select * from board2 order by idx desc;
+		select * from board2 order by idx desc limit #{startIndexNo}, #{pageSize};
 	</select>
 	
 	<select id="getBoardContent" resultType="com.spring.javaProjectS.vo.BoardVO">
 		select * from board2 where idx = #{idx};
 	</select>
+	
+	<!-- 페이징처리  -->
+	<select id="totRecCnt" resultType="int">
+		select count(*) from board2;
+	</select>
+	
+	
+	
+	
+	
 
 	<insert id="setBoardInputPost">
 		insert into board2 values(default,#{vo.mid},#{vo.nickName},#{vo.title},#{vo.email},#{vo.homePage},#{vo.content},default,#{vo.hostIp},#{vo.openSw},default,default);
 	</insert>
+	
+	
+	
+	
+	
+	
+	
+	<update id="setBoardUpdate">
+		update board2 set nickName=#{vo.nickName}, title=#{vo.title}, email=#{vo.email}, homePage=#{vo.homePage}, content=#{vo.content}, hostIp=#{vo.hostIp}, wDate=now(), openSw=#{vo.openSw} where idx = #{vo.idx};
+	</update>
+	
+	
+	
+	
+	
+	
+	<delete id="setBoardDelete">
+		delete from board2 where idx = #{idx};
+	</delete>
 
 </mapper>

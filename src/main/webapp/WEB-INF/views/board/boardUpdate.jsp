@@ -7,6 +7,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>boardUpdate.jsp</title>
+  <script src="${ctp}/ckeditor/ckeditor.js"></script>
   <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
   <style>
     th {
@@ -21,7 +22,7 @@
 <p><br/></p>
 <div class="container">
   <h2 class="text-center">게 시 판 글 수 정 하 기</h2>
-  <form name="myform" method="post" action="boardUpdateOk.bo">
+  <form name="myform" method="post">
     <table class="table table-bordered">
       <tr>
         <th>글쓴이</th>
@@ -41,7 +42,14 @@
       </tr>
       <tr>
         <th>글내용</th>
-        <td><textarea rows="6" name="content" id="content" class="form-control" required>${vo.content}</textarea></td>
+        <td><textarea rows="6" name="content" id="CKEDITOR" class="form-control" required>${vo.content}</textarea></td>
+        <script>
+	        CKEDITOR.replace("content",{
+	        	height : 480,
+	        	filebrowserUploadUrl:"${ctp}/imageUpload",		/* 파일(이미지) 업로드시에 매핑경로 */
+	        	uploadUrl : "${ctp}/imageUpload"
+	        });
+        </script>
       </tr>
       <tr>
         <th>공개여부</th>
@@ -60,6 +68,7 @@
     </table>
     <input type="hidden" name="hostIp" value="${pageContext.request.remoteAddr}" />
     <input type="hidden" name="idx" value="${vo.idx}"/>
+    <input type="hidden" name="nickName" value="${sNickName}"/>
     <input type="hidden" name="pag" value="${pag}"/>
     <input type="hidden" name="pageSize" value="${pageSize}"/>
   </form>

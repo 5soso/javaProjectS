@@ -38,27 +38,32 @@
     	}
     	
     	$.ajax({
-    		url  : "memberEmailSearch.mem",
+    		url  : "${ctp}/member/memberEmailSearch",
     		type : "post",
     		data : {email : email},
     		success:function(res) {
-    			let temp = res.split("/");
-    			console.log("temp :", temp);
-    			let str = '검색결과 : <br/><font color=blue><b>';
-    			for(let i=0; i<temp.length; i++) {
-    				let jump = Math.floor((Math.random()*(4-2)) + 2);
-    				let tempMid = temp[i].substring(0,1);
-    				console.log("tempMid",tempMid,", jump",jump);
-    				for(let j=1; j<temp[i].length; j++) {
-    					if(j % jump == 0) tempMid += "*";
-    					else tempMid += temp[i].substring(j,j+1);
-    				}
-	    			str += tempMid;
-	    			
-	    			str += "<br/>";
-    			}
-    			str += '</b></font>';
-    			midShow.innerHTML = str;
+	    		if(res != 0){
+	    			let temp = res.split("/");
+	    			console.log("temp :", temp);
+	    			let str = '검색결과 : <br/><font color=blue><b>';
+	    			for(let i=0; i<temp.length; i++) {
+	    				let jump = Math.floor((Math.random()*(4-2)) + 2);
+	    				let tempMid = temp[i].substring(0,1);
+	    				console.log("tempMid",tempMid,", jump",jump);
+	    				for(let j=1; j<temp[i].length; j++) {
+	    					if(j % jump == 0) tempMid += "*";
+	    					else tempMid += temp[i].substring(j,j+1);
+	    				}
+		    			str += tempMid;
+		    			
+		    			str += "<br/>";
+	    			}
+	    			str += '</b></font>';
+	    			midShow.innerHTML = str;
+	    		}
+	    		else {
+	    			alert("등록된 아이디가 없습니다.");
+	    		}
     		},
     		error : function() {
     			alert("전송 오류!");

@@ -14,6 +14,7 @@
     th {
       text-align: center;
       background-color: #eee;
+      min-height: 150px;
     }
   </style>
   <script>
@@ -74,9 +75,9 @@
     }
     
     // 게시글 삭제
-    function boardDelete() {
+    function boardDeleteOk() {
     	let ans = confirm("현재 게시글을 삭제 하시겠습니까?");
-    	if(ans) location.href = "boardDelete?idx=${vo.idx}";
+    	if(ans) location.href = "boardDeleteOk?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}";
     }
     
     // 댓글 달기
@@ -234,7 +235,7 @@
         <c:if test="${vo.mid != sMid}"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">신고하기</button></c:if>
         <c:if test="${sMid == vo.mid || sLevel == 0}">
         	<input type="button" value="수정하기" onclick="location.href='boardUpdate?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}';" class="btn btn-info"/> &nbsp;
-        	<input type="button" value="삭제하기" onclick="boardDelete()" class="btn btn-danger"/>
+        	<input type="button" value="삭제하기" onclick="boardDeleteOk()" class="btn btn-danger"/>
         </c:if>
       </td>
     </tr>
