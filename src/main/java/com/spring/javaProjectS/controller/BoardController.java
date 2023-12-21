@@ -5,13 +5,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.javaProjectS.pagination.PageProcess;
 import com.spring.javaProjectS.pagination.PageVO;
 import com.spring.javaProjectS.service.BoardService;
+import com.spring.javaProjectS.vo.Board2ReplyVO;
 import com.spring.javaProjectS.vo.BoardVO;
 
 @Controller
@@ -62,17 +65,30 @@ public class BoardController {
 		else return "redirect:/message/boardInputNo";
 	}
 	
-	//게시글 상세보기
+	//게시글 상세보기 보여주기
 	@RequestMapping(value = "/boardContent", method = RequestMethod.GET)
 	public String boardContentGet(Model model,
 			@RequestParam(name="idx", defaultValue = "0", required = false) int idx,
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
 			@RequestParam(name="pageSize", defaultValue = "5", required = false) int pageSize) {
+		//조회수 증가하기 - session처리 하기
+		boardService.setReadNumPlus(idx);
+		
 		BoardVO vo = boardService.getBoardContent(idx);
+		
+		//이전글 다음글 가져오기
+		BoardVO preVO = boardService.getPreNextSearch(idx, "preVo");
+		BoardVO nextVO = boardService.getPreNextSearch(idx, "nextVo");
+		model.addAttribute("preVo",preVO);
+		model.addAttribute("nextVo",nextVO);
 		
 		model.addAttribute("vo", vo);
 		model.addAttribute("pag", pag);
 		model.addAttribute("pageSize", pageSize);
+		
+		// +추가 : 댓글(대댓글) 보여주기
+		List<Board2ReplyVO> replyVOS = boardService.getBoard2Reply(idx); //리스트에서 상세보기할 때, 선택한 글의 고유번호는 boardIdx가 아니라 idx이다. 
+		model.addAttribute("replyVOS",replyVOS);
 		
 		return "board/boardContent";
 	}
@@ -143,6 +159,71 @@ public class BoardController {
 		
 		if(res == 1) return "redirect:/message/boardUpdateOk";
 		else return "redirect:/message/boardUpdateNo";
+	}
+	
+	
+	// 부모댓글 입력처리(원본글에 대한 댓글)
+	@ResponseBody
+	@RequestMapping(value = "/boardReplyInput", method = RequestMethod.POST)
+	public String boardReplyInputPost(Board2ReplyVO replyVO) {
+		// 부모 댓글의 경우 re_step을 0, re_order=1로 처리한다. (단, 원본글의 첫번째 부모댓글은 re_order=1이지만, 2번째 이상이라면, 마지막 부모댓글의 re_order보다 +1 처리시켜준다.
+		Board2ReplyVO replyParentVO = boardService.getBoardParentReplyCheck(replyVO.getBoardIdx()); //VOS로 받아도 됨.
+		
+		if(replyParentVO == null) {
+			replyVO.setRe_order(1);
+		}
+		else {
+			replyVO.setRe_order(replyParentVO.getRe_order()+1);
+		}
+		
+		replyVO.setRe_step(0);
+		
+		int res = boardService.setBoardReplyInput(replyVO);
+		
+		return res+"";
+	}
+	
+	// (부모)댓글에 대한 답변글(대댓글) 입력처리
+	@ResponseBody
+	@RequestMapping(value = "/boardReplyInputRe", method = RequestMethod.POST)
+	public String boardReplyInputRePost(Board2ReplyVO replyVO) {
+		// 답변글일 경우는 1.re_step은 부모의 re_step+1, 2.re_order는 부모의 re_order보다 큰 댓글은 모두 +1처리 후, 3.자신의 re_order를 처리한다.
+
+		replyVO.setRe_step(replyVO.getRe_step()+1);
+		
+		boardService.setReplyOrderUpdate(replyVO.getBoardIdx(), replyVO.getRe_order());
+		
+		replyVO.setRe_order(replyVO.getRe_order()+1);
+
+		int res = boardService.setBoardReplyInput(replyVO);
+		
+		return res+"";
+	}
+	
+	
+	// 검색기 처리
+	@RequestMapping(value = "/boardSearch", method = RequestMethod.GET)
+	public String boardSearchGet(String search, Model model,
+			@RequestParam(name="searchString", defaultValue = "", required = false) String searchString, 
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag, 
+			@RequestParam(name="pageSize", defaultValue = "5", required = false) int pageSize) {
+		
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "board", search, searchString);
+		//System.out.println("pageVO :" + pageVO);
+
+		List<BoardVO> vos = boardService.getBoardSearchList(pageVO.getStartIndexNo(), pageSize, search, searchString);
+		
+		String searchTitle = "";
+		if(pageVO.getSearch().equals("title")) searchTitle = "글제목";
+		else if(pageVO.getSearch().equals("name")) searchTitle = "글쓴이";
+		else searchTitle = "글내용";
+		
+		model.addAttribute("vos", vos);
+		model.addAttribute("pageVO", pageVO);
+		model.addAttribute("searchTitle", searchTitle);
+		model.addAttribute("searchCount", vos.size());
+		
+		return "board/boardSearchList";
 	}
 	
 }

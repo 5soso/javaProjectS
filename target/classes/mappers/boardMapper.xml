@@ -3,7 +3,11 @@
 <mapper namespace="com.spring.javaProjectS.dao.BoardDAO">
 
 	<select id="getBoardList" resultType="com.spring.javaProjectS.vo.BoardVO">
-		select * from board2 order by idx desc limit #{startIndexNo}, #{pageSize};
+		<!-- select * from board2 order by idx desc limit #{startIndexNo}, #{pageSize}; -->
+		select *,datediff(wDate, now()) as date_diff, 
+		timestampdiff(hour, wDate, now()) as hour_diff ,
+		(select count(*) from board2Reply where boardIdx=b.idx) as replyCnt
+		from board2 b order by idx desc limit #{startIndexNo}, #{pageSize};
 	</select>
 	
 	<select id="getBoardContent" resultType="com.spring.javaProjectS.vo.BoardVO">
@@ -15,6 +19,36 @@
 		select count(*) from board2;
 	</select>
 	
+	<!-- 이전글 다음글 처리 ![CDATA[]] :연산자 처리  -->
+	<select id="getPreNextSearch" resultType="com.spring.javaProjectS.vo.BoardVO">
+		<if test="str == 'preVo'">
+			select idx,title from board2 where <![CDATA[idx < #{idx}]]> order by idx desc limit 1;
+		</if>
+		<if test="str != 'preVo'">
+			select idx,title from board2 where <![CDATA[idx > #{idx}]]> order by idx limit 1;
+		</if>
+	</select>
+	
+	<!-- 부모댓글 가져오기 -->
+	<select id="getBoardParentReplyCheck" resultType="com.spring.javaProjectS.vo.Board2ReplyVO">
+		select * from board2Reply where boardIdx = #{boardIdx} order by idx desc limit 1;
+	</select>
+	
+	<!-- 댓글(대댓글) 가져오기 -->
+	<select id="getBoard2Reply" resultType="com.spring.javaProjectS.vo.Board2ReplyVO">
+		select * from board2Reply where boardIdx = #{idx} order by re_order; <!-- boardIdx랑 idx 비교하기, 여러개 가져올 수도 있기 때문에 limit 사용하면 안됨 -->
+	</select>
+	
+	<!-- 검색기 처리 -->
+	<select id="totRecCntSearch" resultType="int">
+		select count(*) from board2 where ${search} like concat('%',#{searchString},'%'); <!-- ${} : 외부 변수를 사용할 때, #{} : param에 있는 변수 사용할 때 -->
+	</select>
+	
+	<!-- 검색 리스트 -->
+	<select id="getBoardSearchList" resultType="com.spring.javaProjectS.vo.BoardVO">
+		select * from board2 where ${search} like concat('%',#{searchString},'%') order by idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	
 	
 	
 	
@@ -24,7 +58,10 @@
 		insert into board2 values(default,#{vo.mid},#{vo.nickName},#{vo.title},#{vo.email},#{vo.homePage},#{vo.content},default,#{vo.hostIp},#{vo.openSw},default,default);
 	</insert>
 	
-	
+	<!-- 댓글저장하기 -->
+	<insert id="setBoardReplyInput">
+		insert into board2Reply values(default, #{replyVO.boardIdx}, #{replyVO.re_step}, #{replyVO.re_order}, #{replyVO.mid}, #{replyVO.nickName}, default, #{replyVO.hostIp}, #{replyVO.content});
+	</insert>
 	
 	
 	
@@ -34,8 +71,13 @@
 		update board2 set nickName=#{vo.nickName}, title=#{vo.title}, email=#{vo.email}, homePage=#{vo.homePage}, content=#{vo.content}, hostIp=#{vo.hostIp}, wDate=now(), openSw=#{vo.openSw} where idx = #{vo.idx};
 	</update>
 	
+	<update id="setReplyOrderUpdate">
+		update board2Reply set re_order = re_order + 1 where boardIdx=#{boardIdx} and re_order > #{re_order};
+	</update>
 	
-	
+	<update id="setReadNumPlus">
+		update board2 set readNum = readNum + 1 where idx = #{idx};
+	</update>
 	
 	
 	

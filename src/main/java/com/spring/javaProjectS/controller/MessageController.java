@@ -15,7 +15,8 @@ public class MessageController {
 	public String msgGet(@PathVariable String msgFlag, String mid, Model model,
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
 			@RequestParam(name="pageSize", defaultValue = "5", required = false) int pageSize,
-			@RequestParam(name="idx", defaultValue = "0", required = false) int idx) {
+			@RequestParam(name="idx", defaultValue = "0", required = false) int idx,
+			@RequestParam(name="temp", defaultValue = "", required = false) String temp) {
 		
 		if(msgFlag.equals("userDeleteOk")) {
 			model.addAttribute("msg", "user가 삭제 되었습니다.");
@@ -155,8 +156,11 @@ public class MessageController {
 			model.addAttribute("msg", "로그인후 사용가능합니다.");
 			model.addAttribute("url", "member/memberLogin"); 
 		}
-		
-		
+		/* validatorError Backend 체크*/
+		else if(msgFlag.equals("validatorError")) {
+			model.addAttribute("msg", "유저 등록 실패!" + temp + "를 확안하세요.");
+			model.addAttribute("url", "user2/user2List"); 
+		}
 		
 		return "include/message";
 	}

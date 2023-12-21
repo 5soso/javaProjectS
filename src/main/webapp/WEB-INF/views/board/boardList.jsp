@@ -60,7 +60,7 @@
         <td>${vo.nickName}</td>
         <td>
           <!-- 1일(24시간) 이내는 시간만 표시, 이후는 날짜와 시간을 표시 : 2023-11-16 10:35:25 -->
-          <!-- 단(24시간안에 만족하는 자료), 날짜가 오늘날짜만 시간으로표시하고, 어제날짜는 날짜시간으로 표시하시오. -->
+          <!-- 단(24시간안에 만족하는 자료), 날짜가 오늘날짜인 경우 시간으로 표시(24시간제)하고, 어제날짜는 날짜+시간으로 표시하시오. -->
           <c:if test="${vo.hour_diff > 24}">${fn:substring(vo.WDate,0,10)}</c:if>
           <c:if test="${vo.hour_diff <= 24}">
             ${vo.date_diff == 0 ? fn:substring(vo.WDate,11,19) : fn:substring(vo.WDate,0,16)}
@@ -91,7 +91,7 @@
 <br/>
 <!-- 검색기 처리 -->
 <div class="container text-center">
-  <form name="searchForm" method="post" action="boardSearch">
+  <form name="searchForm" method="get" action="boardSearch">
     <b>검색 : </b>
     <select name="search" id="search">
       <option value="title" selected>글제목</option>

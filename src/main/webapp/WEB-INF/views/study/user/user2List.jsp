@@ -33,11 +33,11 @@
   		str += '<table class="table table-bordered">';
   		str += '<tr>';
   		str += '<th>아이디</th>';
-  		str += '<td><input type="text" name="mid" class="form-control" required/></td>';
+  		str += '<td><input type="text" name="mid" class="form-control" /></td>';
   		str += '</tr>';
   		str += '<tr>';
   		str += '<th>성명</th>';
-  		str += '<td><input type="text" name="name" class="form-control" required /></td>';
+  		str += '<td><input type="text" name="name" class="form-control"  /></td>';
   		str += '</tr>';
   		str += '<tr>';
   		str += '<th>나이</th>';
