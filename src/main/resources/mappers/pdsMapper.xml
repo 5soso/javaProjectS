@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javaProjectS.dao.PdsDAO">
+
+	<!-- 페이징처리 -->
+	<select id="totRecCnt" resultType="int">
+		<!--  
+		<if test='part != "전체"'>
+			select count(*) from pds2 where part = #{part};
+		</if> 
+		<if test='part == "전체"'>
+			select count(*) from pds2;
+		</if> 
+		-->
+		select count(*) from pds2 <if test='part != "전체"'> where part = #{part} </if>;
+	</select>
+	
+	<select id="getPdsList" resultType="com.spring.javaProjectS.vo.PdsVO">
+		select * from pds2 <if test='part != "전체"'> where part = #{part} </if> order by idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	
+	<select id="getIdxSearch" resultType="com.spring.javaProjectS.vo.PdsVO">
+		select * from pds2 where idx = #{idx};
+	</select>
+	
+	
+	
+	<!-- 파일 업로드 처리 -->
+	<insert id="setPdsInput">
+		insert into pds2 values(default,#{vo.mid},#{vo.nickName},#{vo.fName},#{vo.fSName},#{vo.fSize},#{vo.title},#{vo.part},#{vo.pwd},default,default,#{vo.openSw},#{vo.content},#{vo.hostIp});
+	</insert>
+	
+	
+	
+	
+	
+	<update id="setPdspdsDownNumCheck">
+		update pds2 set downNum = downNum + 1 where idx = #{idx};
+	</update>
+
+
+
+	<delete id="setPdsDelete">
+		delete from pds2 where idx = #{idx};
+	</delete>
+
+
+
+</mapper>

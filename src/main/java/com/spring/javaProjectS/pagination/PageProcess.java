@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.javaProjectS.dao.BoardDAO;
+import com.spring.javaProjectS.dao.PdsDAO;
 
 @Service
 public class PageProcess {
@@ -11,19 +12,23 @@ public class PageProcess {
 	@Autowired
 	BoardDAO boardDao;
 	
-	public PageVO totRecCnt(int pag, int pageSize, String section, String part, String searchString) { //String section : 게시판 분류(게시판/자료실/방명록..등), parg : 소분류(학습,여행,맛집..등)
+	@Autowired
+	PdsDAO pdsDao;
+	
+	public PageVO totRecCnt(int pag, int pageSize, String section, String part, String searchString) { //String section : 게시판 분류(게시판/자료실/방명록..등), part : 소분류(학습,여행,맛집..등)
 		PageVO pageVO = new PageVO();
 		
 		int totRecCnt = 0;
 		String search = "";
 		
 		if(section.equals("board")) {
-			if(part.equals(""))	totRecCnt = boardDao.totRecCnt(); 
-			else {
+			if(part.equals(""))	totRecCnt = boardDao.totRecCnt(); //검색하지않을 때
+			else { //검색할 때
 				search = part;
 				totRecCnt = boardDao.totRecCntSearch(search, searchString);
 			}
 		}
+		else if(section.equals("pds")) totRecCnt = pdsDao.totRecCnt(part);
 		 
 		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1 ;
 		int startIndexNo = (pag - 1) * pageSize;

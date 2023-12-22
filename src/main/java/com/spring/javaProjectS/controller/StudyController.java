@@ -1,5 +1,9 @@
 package com.spring.javaProjectS.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
@@ -9,7 +13,9 @@ import java.util.UUID;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -17,9 +23,13 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.javaProjectS.common.ARIAUtil;
 import com.spring.javaProjectS.common.SecurityUtil;
@@ -258,10 +268,75 @@ public class StudyController {
 		return "redirect:/message/mailSendOk";
 	}
 	
+	/* 파일업로드 */
+	// 파일 업로드 폼 보여주기
+	@RequestMapping(value = "/fileUpload/fileUpload", method = RequestMethod.GET)
+	public String fileUploadGet(HttpServletRequest request, Model model) {
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/study"); 
+		
+		String[] files = new File(realPath).list(); //list()폴더명 밑에 있는 모든 하위목록을 가르킨다
+		
+		model.addAttribute("files", files);
+		model.addAttribute("filesCnt", files.length);
+		
+		return "study/fileUpload/fileUpload";
+	}
 	
+	// 파일 업로드 처리
+	@RequestMapping(value = "/fileUpload/fileUpload", method = RequestMethod.POST)
+	public String fileUploadPost(MultipartFile fName, String mid) { //multilpartFile : 서버에 저장되어잇는 상태가 아니라 메모리에 올라가있는 상태
+		
+		int res = studyService.fileUpload(fName, mid);
+		
+		if(res == 1) return "redirect:/message/fileUploadOk";
+		else return "redirect:/message/fileUploadNo";
+		
+	}
 	
+	// 파일 삭제 처리
+	@ResponseBody
+	@RequestMapping(value = "/fileUpload/fileDelete", method = RequestMethod.POST)
+	public String fileDeletePost(HttpServletRequest request,
+			@RequestParam(name="file", defaultValue = "", required = false) String fName) { 
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/study/"); // 마지막에 '/'를 붙여서 파일명으로 본다.
+		
+		int res = 0;
+		File file = new File(realPath + fName);
+		
+		if(file.exists()) {
+			file.delete();
+			res = 1;
+		}
+		return res + "";
+	}
 	
-	
+	// 파일 다운로드
+	@RequestMapping(value = "/fileUpload/fileDownAction", method = RequestMethod.GET)
+	public void fileDownActionGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String file = request.getParameter("file");
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/study/");
+		
+		File downFile = new File(realPath + file);
+		
+		String downloadFileName = new String(file.getBytes("utf-8"), "8859_1"); //"8859_1":윈도우방식, 파일명이 한글일 경우 깨지는 것을 방지 
+		response.setHeader("Content-Disposition", "attachment:filename=" + downloadFileName);
+		
+		FileInputStream fis = new FileInputStream(downFile);
+
+		//실제 파일 던지기(서버에서 클라이언트로:http 통신으로 넘긴다. servletOutputStream을 사용하여 http 통신에 던져서 headr에 실어서 보낸다.)
+		ServletOutputStream sos = response.getOutputStream();
+		
+		//한번에 던지면 서버가 먹통이 될 수 있기 때문에 쪼개서 던지기 = 스트리밍방식
+		byte[] bytes = new byte[2048]; //4K는 4096
+		int data = 0;
+		
+		while((data= fis.read(bytes, 0, bytes.length)) != -1) {
+			sos.write(bytes, 0, data); //write : 담는명령어
+		}
+		sos.flush(); // 남아있는 거 있을 수도 있으니까 한번더 보내기
+		sos.close(); // 서블릿 아웃픗 스트림
+		fis.close(); //파일 업로드 시스템
+	}
 	
 }
 

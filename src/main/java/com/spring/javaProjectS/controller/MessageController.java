@@ -161,6 +161,24 @@ public class MessageController {
 			model.addAttribute("msg", "유저 등록 실패!" + temp + "를 확안하세요.");
 			model.addAttribute("url", "user2/user2List"); 
 		}
+		/* 파일업로드연습 */
+		else if(msgFlag.equals("fileUploadOk")) {
+			model.addAttribute("msg", "파일이 업로드되었습니다.");
+			model.addAttribute("url", "study/fileUpload/fileUpload"); 
+		}
+		else if(msgFlag.equals("fileUploadNo")) {
+			model.addAttribute("msg", "파일이 업로드에 실패하였습니다.");
+			model.addAttribute("url", "study/fileUpload/fileUpload"); 
+		}
+		/* Pds자료실 */
+		else if(msgFlag.equals("pdsInputOk")) {
+			model.addAttribute("msg", "자료실에 등록되었습니다.");
+			model.addAttribute("url", "pds/pdsList"); 
+		}
+		else if(msgFlag.equals("pdsInputNo")) {
+			model.addAttribute("msg", "등록실패하였습니다.");
+			model.addAttribute("url", "pds/pdsInput"); 
+		}
 		
 		return "include/message";
 	}

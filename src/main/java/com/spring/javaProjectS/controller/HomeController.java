@@ -51,7 +51,7 @@ public class HomeController {
 		
 		byte[] bytes = upload.getBytes();
 		FileOutputStream fos = new FileOutputStream(new File(realPath+oFileName));		
- 		fos.write(bytes);
+ 		fos.write(bytes); //외부에서 파일을 올리는 것이기 때문에 바이너리로 올라오는 것을 바이트로 바꾸고, 그대로 업로드시키면 된다. 
 		
 		PrintWriter out = response.getWriter();
 		String fileUrl = request.getContextPath() + "/data/ckeditor/" + oFileName; /* ckeditor 폴더에 업로드하는 모든 파일이 올라간다.*/
