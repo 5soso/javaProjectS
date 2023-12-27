@@ -34,7 +34,7 @@
 	
 	
 	
-	<update id="setPdspdsDownNumCheck">
+	<update id="setPdsDownNumCheck">
 		update pds2 set downNum = downNum + 1 where idx = #{idx};
 	</update>
 

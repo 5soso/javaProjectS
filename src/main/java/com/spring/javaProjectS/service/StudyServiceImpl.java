@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.javaProjectS.dao.StudyDAO;
 import com.spring.javaProjectS.dao.User2DAO;
+import com.spring.javaProjectS.vo.KakaoAddressVO;
 import com.spring.javaProjectS.vo.UserVO;
 
 @Service
@@ -167,6 +168,26 @@ public class StudyServiceImpl implements StudyService {
 		}
 		fos.flush();
 		fos.close();
+	}
+
+	@Override
+	public KakaoAddressVO getKakaoAddressSearch(String address) {
+		return studyDAO.getKakaoAddressSearch(address);
+	}
+
+	@Override
+	public void setKaKaoAddressInput(KakaoAddressVO vo) {
+		studyDAO.setKaKaoAddressInput(vo);
+	}
+
+	@Override
+	public List<KakaoAddressVO> getKakaoAddressList() {
+		return studyDAO.getKakaoAddressList();
+	}
+
+	@Override
+	public int setKakaoAddressDelete(String address) {
+		return studyDAO.setKakaoAddressDelete(address);
 	} 
 	
 }

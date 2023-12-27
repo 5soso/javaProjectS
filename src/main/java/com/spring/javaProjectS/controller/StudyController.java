@@ -34,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.spring.javaProjectS.common.ARIAUtil;
 import com.spring.javaProjectS.common.SecurityUtil;
 import com.spring.javaProjectS.service.StudyService;
+import com.spring.javaProjectS.vo.KakaoAddressVO;
 import com.spring.javaProjectS.vo.MailVO;
 import com.spring.javaProjectS.vo.UserVO;
 
@@ -336,6 +337,72 @@ public class StudyController {
 		sos.flush(); // 남아있는 거 있을 수도 있으니까 한번더 보내기
 		sos.close(); // 서블릿 아웃픗 스트림
 		fis.close(); //파일 업로드 시스템
+	}
+	
+	
+	// 카카오맵 연습 기본
+	@RequestMapping(value = "/kakao/kakaomap", method = RequestMethod.GET)
+	public String kakaomapGet() {
+		return "study/kakao/kakaomap";
+	}
+	
+	// 카카오맵 연습1
+	@RequestMapping(value = "/kakao/kakaoEx1", method = RequestMethod.GET)
+	public String kakaoEx1Get() {
+		return "study/kakao/kakaoEx1";
+	}
+	
+	// 카카오맵 연습1(선택한 지점명을 DB에 저장하기)
+	@ResponseBody
+	@RequestMapping(value = "/kakao/kakaoEx1", method = RequestMethod.POST)
+	public String kakaoEx1Post(KakaoAddressVO vo, Model model) {
+		KakaoAddressVO searchVO = studyService.getKakaoAddressSearch(vo.getAddress());
+		
+		if(searchVO != null) return "0";
+		
+		studyService.setKaKaoAddressInput(vo);
+		
+		return "1";
+	}
+	
+	// 카카오맵 연습2(MyDB에 저장된 주소목록 가져오기 / 지점검색하기 추가 .. 같이 사용)
+	@RequestMapping(value = "/kakao/kakaoEx2", method = RequestMethod.GET)
+	public String kakaoEx2Get(Model model, 
+			@RequestParam(name="address", defaultValue = "", required = false) String address) {
+		KakaoAddressVO vo = new KakaoAddressVO();
+		List<KakaoAddressVO> vos = studyService.getKakaoAddressList();
+		if(address.equals("")) {
+			vo.setLatitude(36.63510627148798);
+			vo.setLongtitude(127.4595239897276);
+		}
+		else {
+			vo = studyService.getKakaoAddressSearch(address);
+		}
+		
+		model.addAttribute("vos", vos);
+		model.addAttribute("vo", vo);
+		
+		return "study/kakao/kakaoEx2";
+	}
+	
+	// 카카오맵 연습2(MyDB에 저장된 주소 삭제하기)
+	@ResponseBody
+	@RequestMapping(value = "/kakao/kakaoAddressDelete", method = RequestMethod.POST)
+	public String kakaoEx2Post(Model model, 
+			@RequestParam(name="address", defaultValue = "", required = false) String address) {
+		int res = 0;
+		System.out.println("address : " + address);
+		res = studyService.setKakaoAddressDelete(address);
+		
+		return res + "";
+	}
+	
+	// 카카오맵 연습3(kakaoDB에 저장된 지명으로 검색후 MyDB에 주소 저장하기)
+	@RequestMapping(value = "/kakao/kakaoEx3", method = RequestMethod.GET)
+	public String kakaoEx3Get(Model model,
+			@RequestParam(name="address", defaultValue = "청주시청", required = false) String address) {
+		model.addAttribute("address",address);
+		return "study/kakao/kakaoEx3";
 	}
 	
 }

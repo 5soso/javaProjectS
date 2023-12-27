@@ -37,9 +37,10 @@
     		return false;
     	}
     	
+    	
     	$.ajax({
     		url  : "${ctp}/member/memberEmailSearch",
-    		type : "post",
+    		type : "POST",
     		data : {email : email},
     		success:function(res) {
 	    		if(res != 0){
@@ -69,6 +70,7 @@
     			alert("전송 오류!");
     		}
     	});
+    		console.log("email",email);
     }
     
     // 비밀번호 검색폼 보여주기
@@ -146,7 +148,7 @@
   	  </tr>
   	</table>
   </form>
-	<form name="searchForm">
+	<form name="searchForm" method="post">
 	  <div id="searchMid">
 	    <hr/>
 	  	<table class="table table-borderless p-0 text-center">

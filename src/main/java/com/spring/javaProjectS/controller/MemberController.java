@@ -18,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -276,7 +278,8 @@ public class MemberController {
 	//이메일로 아이디 검색 
 	@ResponseBody
 	@RequestMapping(value = "/memberEmailSearch", method = RequestMethod.POST)
-	public String memberEmailSearchPost(String email) {
+	//@PostMapping(value = "/memberEmailSearch")
+	public String memberEmailSearchPost(@RequestBody String email) {
 		System.out.println("email : " + email);
 		
 		List<MemberVO> vos = memberService.getMemberEmailSearch(email);

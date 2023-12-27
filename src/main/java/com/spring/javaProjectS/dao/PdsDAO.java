@@ -14,7 +14,7 @@ public interface PdsDAO {
 
 	public int setPdsInput(@Param("vo") PdsVO vo);
 
-	public int setPdspdsDownNumCheck(@Param("idx") int idx);
+	public int setPdsDownNumCheck(@Param("idx") int idx);
 
 	public PdsVO getIdxSearch(@Param("idx") int idx);
 

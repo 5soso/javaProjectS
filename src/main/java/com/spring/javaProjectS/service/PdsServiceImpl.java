@@ -92,8 +92,8 @@ public class PdsServiceImpl implements PdsService {
 	}
 
 	@Override
-	public int setPdspdsDownNumCheck(int idx) {
-		return pdsDAO.setPdspdsDownNumCheck(idx);
+	public int setPdsDownNumCheck(int idx) {
+		return pdsDAO.setPdsDownNumCheck(idx);
 	}
 
 	@Override
