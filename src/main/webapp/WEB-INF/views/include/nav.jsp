@@ -30,8 +30,10 @@
 	      <button class="w3-padding-large w3-button" title="More">study2 <i class="fa fa-caret-down"></i></button>     
 	      <div class="w3-dropdown-content w3-bar-block w3-card-4">
 	        <a href="${ctp}/study/kakao/kakaomap" class="w3-bar-item w3-button">kakaomap</a>
-	        <a href="${ctp}/user2/user2List" class="w3-bar-item w3-button">test2</a>
-	        <a href="#" class="w3-bar-item w3-button">test3</a>
+	        <a href="${ctp}/study/chart/chart" class="w3-bar-item w3-button">차트연습1</a>
+	        <a href="${ctp}/study/chart2/chart" class="w3-bar-item w3-button">차트연습2</a>
+	        <a href="${ctp}/study/captcha/randomAlphaNumeric" class="w3-bar-item w3-button">랜덤알파뉴메릭</a>
+	        <a href="${ctp}/study/captcha/captcha" class="w3-bar-item w3-button">캡차연습</a>
 	      </div>
 	    </div>
 	    <div class="w3-dropdown-hover w3-hide-small">

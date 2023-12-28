@@ -1,8 +1,13 @@
 package com.spring.javaProjectS.controller;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
@@ -11,12 +16,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import javax.imageio.ImageIO;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -24,7 +32,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,6 +41,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.spring.javaProjectS.common.ARIAUtil;
 import com.spring.javaProjectS.common.SecurityUtil;
 import com.spring.javaProjectS.service.StudyService;
+import com.spring.javaProjectS.vo.ChartVO;
 import com.spring.javaProjectS.vo.KakaoAddressVO;
 import com.spring.javaProjectS.vo.MailVO;
 import com.spring.javaProjectS.vo.UserVO;
@@ -269,6 +277,8 @@ public class StudyController {
 		return "redirect:/message/mailSendOk";
 	}
 	
+	/* ========================================================================================== */
+	
 	/* 파일업로드 */
 	// 파일 업로드 폼 보여주기
 	@RequestMapping(value = "/fileUpload/fileUpload", method = RequestMethod.GET)
@@ -339,6 +349,7 @@ public class StudyController {
 		fis.close(); //파일 업로드 시스템
 	}
 	
+	/* ========================================================================================== */
 	
 	// 카카오맵 연습 기본
 	@RequestMapping(value = "/kakao/kakaomap", method = RequestMethod.GET)
@@ -403,6 +414,131 @@ public class StudyController {
 			@RequestParam(name="address", defaultValue = "청주시청", required = false) String address) {
 		model.addAttribute("address",address);
 		return "study/kakao/kakaoEx3";
+	}
+	
+	/* ========================================================================================== */
+	//차트연습
+	@RequestMapping(value = "/chart/chart", method = RequestMethod.GET)
+	public String chartGet(Model model, 
+			@RequestParam(name = "part", defaultValue = "", required = false) String part) {
+		model.addAttribute("part",part);
+		return "study/chart/chart";
+	}
+	
+	//차트분석연습(다양한 차트) 보여주기
+	@RequestMapping(value = "/chart2/chart", method = RequestMethod.GET)
+	public String chart2Get(Model model, ChartVO vo) {
+		model.addAttribute("vo",vo);
+		
+		return "study/chart2/chart";
+	}
+	
+	//차트분석연습(다양한 차트 분석) 처리
+	@RequestMapping(value = "/chart2/chart", method = RequestMethod.POST)
+	public String chart2Post(Model model, ChartVO vo) {
+		System.out.println("vo : " + vo);
+		model.addAttribute("vo",vo);
+		return "study/chart2/chart";
+	}
+	
+//차트연습(최근방문횟수 분석처리)
+	@RequestMapping(value = "/chart2/visitCount", method = RequestMethod.GET)
+	public String chart2Get(Model model,
+			@RequestParam(name="part", defaultValue="", required=false) String part) {
+		//System.out.println("part  " + part);
+		List<ChartVO> vos = studyService.getVisitCount();	// 최근 8일간 방문한 총 횟수를 가져온다.
+		String[] visitDates = new String[8];
+		int[] visitDays = new int[8];
+		int[] visitCounts = new int[8];
+		for(int i=0; i<visitDates.length; i++) {
+			visitDates[i] = vos.get(i).getVisitDate().replaceAll("-", "").substring(4);
+			visitDays[i] = Integer.parseInt(vos.get(i).getVisitDate().toString().substring(8));
+			visitCounts[i] = vos.get(i).getVisitCount();
+		}
+		
+		model.addAttribute("title", "최근 8일간 방문횟수");
+		model.addAttribute("subTitle", "최근 8일동안 방문한 해당일자 방문자 총수를 표시합니다.");
+		model.addAttribute("visitCount", "방문횟수");
+		model.addAttribute("legend", "일일 방문 총횟수");
+		model.addAttribute("topTitle", "방문날짜");
+		model.addAttribute("xTitle", "방문날짜");
+		model.addAttribute("part", part);
+		model.addAttribute("visitDates", visitDates);
+		model.addAttribute("visitDays", visitDays);
+		model.addAttribute("visitCounts", visitCounts);
+		return "study/chart2/chart";
+	}
+	
+	
+	/*----------------------------------------------------------------------------------------*/
+	
+	//randomAlphaNumeric : 알파벳과 숫자를 랜덤하게 출력하기 폼.
+	@RequestMapping(value = "/captcha/randomAlphaNumeric", method = RequestMethod.GET)
+	public String randomAlphaNumericGet() {
+		return "study/captcha/randomAlphaNumeric";
+	}
+	
+	// randomAlphaNumeric : 알파벳과 숫자를 랜덤하게 출력하기 처리...
+	@ResponseBody
+	@RequestMapping(value = "/captcha/randomAlphaNumeric", method = RequestMethod.POST)
+	public String randomAlphaNumericPost() {
+		String res = RandomStringUtils.randomAlphanumeric(64);
+		return res;
+	}
+	
+	// 캡차 : 사람과 기계 구별하기 폼...
+	@RequestMapping(value = "/captcha/captcha", method = RequestMethod.GET)
+	public String chptchaGet() {
+		return "study/captcha/captcha";
+	}
+	
+	// 캡차 이미지 만들기...
+	@ResponseBody
+	@RequestMapping(value = "/captcha/captchaImage", method = RequestMethod.POST)
+	public String chptchaImagePost(HttpSession session, HttpServletRequest request) {
+		// 시스템에 설정된 폰트 출력해보기
+//		Font[] fontList = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
+//		for(Font f : fontList) {
+//			System.out.println(f.getName());
+//		}
+		
+		try {
+			// 알파뉴메릭문자 5개를 가져온다.
+			String randomString = RandomStringUtils.randomAlphanumeric(5);
+			System.out.println("randomString : " + randomString);
+			session.setAttribute("sCaptcha", randomString);
+			
+			Font font = new Font("Jokerman", Font.ITALIC, 30);
+			FontRenderContext frc = new FontRenderContext(null, true, true);
+			Rectangle2D bounds = font.getStringBounds(randomString, frc);
+			int w = (int) bounds.getWidth();
+			int h = (int) bounds.getHeight();
+			
+			// 이미지로 생성하기
+			BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+			Graphics2D g = image.createGraphics();
+			
+			g.fillRect(0, 0, w, h);
+			g.setColor(new Color(0, 156, 240));
+			g.setFont(font);
+			// 각종 랜더링 명령어에 의한 chptcha 문자 작업..(생략)..
+			g.drawString(randomString, (float)bounds.getX(), (float)-bounds.getY());
+			g.dispose();
+			
+			String realPath = request.getSession().getServletContext().getRealPath("/resources/data/study/");
+			ImageIO.write(image, "png", new File(realPath + "captcha.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "study/captcha/captcha";
+	}
+	
+	// 캡차확인하기 처리
+	@ResponseBody
+	@RequestMapping(value = "/captcha/captcha", method = RequestMethod.POST)
+	public String chptchaPost(HttpSession session, String strCaptcha) {
+		if(strCaptcha.equals(session.getAttribute("sCaptcha").toString())) return "1";
+		else return "0";
 	}
 	
 }

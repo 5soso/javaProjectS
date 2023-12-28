@@ -10,7 +10,9 @@
 		select * from kakaoAddress order by address;
 	</select>
 	
-	
+	<select id="getVisitCount" resultType="com.spring.javaProjectS.vo.ChartVO">
+  	select substring(visitDate, 1, 10) as visitDate, visitCount from visit order by visitDate desc limit 8;
+  </select>
 	
 	
 	
