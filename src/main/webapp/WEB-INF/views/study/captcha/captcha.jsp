@@ -28,9 +28,11 @@
     			url   : "${ctp}/study/captcha/captchaImage",
     			async : false,
     			success:function() {
-    				//$("#chapchaImage").load(location.href + ' #chapchaImage');  // 부분 리로드
-    				$("#chapchaCode").load(location.href + ' #chapchaCode');  // 부분 리로드
-    				location.reload();
+    				//setTimeout(function() {
+	    				//$("#chapchaImage").load(location.href + ' #chapchaImage');  // 부분 리로드
+	    				//$("#chapchaCode").load(location.href + ' #chapchaCode');  // 부분 리로드
+	    				location.reload();
+    				//}, 3000);
     			},
     			error : function() {
     				alert("전송오류!!");
@@ -68,11 +70,12 @@
   </pre>
   <hr/>
   <form name="myform">
-    <p id="chapchaCode">다음 코드를 입력해 주세요 : <img src="${ctp}/data/study/captcha.png" id="chapchaImage"></p>
+    <p id="chapchaCode">다음 코드를 입력해 주세요(${captchaImage}) : <img src="${ctp}/data/study/${captchaImage}" id="chapchaImage"></p>
     <p>
       <input type="text" name="strCaptcha" id="strCaptcha"/>
       <input type="button" value="확인" id="confirmBtn"/>
-      <input type="button" value="새로고침" id="refreshBtn"/>
+      <!-- <input type="button" value="새로고침" id="refreshBtn"/> -->
+      <input type="button" value="새로고침" onclick="location.href='captchaImage';"/>
     </p>
   </form>
 </div>

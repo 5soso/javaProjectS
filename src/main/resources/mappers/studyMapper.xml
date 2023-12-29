@@ -14,13 +14,19 @@
   	select substring(visitDate, 1, 10) as visitDate, visitCount from visit order by visitDate desc limit 8;
   </select>
 	
-	
+	<select id="getQrCodeSearch"  resultType="com.spring.javaProjectS.vo.QrCodeVO">
+		select * from qrCode where qrCodeName = #{qrCode};
+	</select>
 	
 	
 	
 	
 	<insert id="setKaKaoAddressInput">
-		insert into kakaoAddress values (#{vo.address},#{vo.latitude},#{vo.longtitude});
+		insert into kakaoAddress values (#{vo.address},#{vo.latitude},#{vo.longtitude}); 
+	</insert>
+	
+	<insert id="setQrCodeCreate">
+		insert into qrCode values (default, #{vo.mid},#{vo.name},#{vo.email},#{vo.movieName},#{vo.movieDate},#{vo.movieTime},#{vo.movieAdult},#{vo.movieChild},#{vo.publicShow},#{vo.qrCodeName}); 
 	</insert>
 	
 	

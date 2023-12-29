@@ -1,12 +1,18 @@
 package com.spring.javaProjectS.service;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.ImageIcon;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,11 +20,20 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageConfig;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.spring.javaProjectS.dao.StudyDAO;
 import com.spring.javaProjectS.dao.User2DAO;
 import com.spring.javaProjectS.vo.ChartVO;
 import com.spring.javaProjectS.vo.KakaoAddressVO;
+import com.spring.javaProjectS.vo.QrCodeVO;
 import com.spring.javaProjectS.vo.UserVO;
+
+import lombok.Data;
 
 @Service
 public class StudyServiceImpl implements StudyService {
@@ -194,6 +209,174 @@ public class StudyServiceImpl implements StudyService {
 	@Override
 	public List<ChartVO> getVisitCount() {
 		return studyDAO.getVisitCount();
-	} 
+	}
+
+	@Override
+	public String setQrCodeCreate1(String realPath, QrCodeVO vo) {
+		String qrCodeName = "";
+		String qrCodeName2 = "";
+		
+		try {
+			Date today = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+			String strToday = sdf.format(today);
+			UUID uid = UUID.randomUUID();
+			String strUid = uid.toString().substring(0,2); //날짜와 섞어 쓰기 (rand뉴메릭도똑같음)
+			
+			qrCodeName = strToday + "_" + vo.getMid() + "_" + vo.getName() + "_" + vo.getEmail() + "_" + strUid; 
+			qrCodeName2 = "생성날짜 : " + strToday + "\n아이디 : " + vo.getMid() + "\n성명 : " + vo.getName() + "\n이메일 : " + vo.getEmail(); 
+			qrCodeName2 = new String(qrCodeName2.getBytes("UTF-8"), "ISO-8859-1");
+			
+			File file = new File(realPath);
+			if(!file.exists()) file.mkdirs(); // 폴더가 존재하지 않으면 폴더를 생성시켜준다,
+			
+			//qr코드 만들기
+			int qrCodeColor = 0xFF000000; //qr 코드의 글자색 - 검정색
+			int qrCodeBackColor = 0xFFFFFF;  //qr 코드의 배경색(바탕색) - 흰색
+			
+			QRCodeWriter qrCodeWriter = new QRCodeWriter();
+			BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeName2, BarcodeFormat.QR_CODE, 200 , 200);
+			
+			MatrixToImageConfig matrixToImageConfig = new MatrixToImageConfig(qrCodeColor,qrCodeBackColor );
+			BufferedImage bufferedImage = MatrixToImageWriter.toBufferedImage(bitMatrix, matrixToImageConfig);
+			
+			//생성된 QR코드 이미지를 그림파일로 만들어낸다.
+			ImageIO.write(bufferedImage, "png", new File(realPath + qrCodeName + ".png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (WriterException e) {
+			e.printStackTrace();
+		}
+		return qrCodeName;
+	}
+
+	@Override
+	public String setQrCodeCreate2(String realPath, QrCodeVO vo) {
+		String qrCodeName = "";
+		String qrCodeName2 = "";
+		
+		try {
+			Date today = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+			String strToday = sdf.format(today);
+			UUID uid = UUID.randomUUID();
+			String strUid = uid.toString().substring(0,2); //날짜와 섞어 쓰기 (rand뉴메릭도똑같음)
+			
+			//qrCodeName = strToday + "_" + vo.getMoveUrl() + "_" + strUid; 
+			qrCodeName = strToday + "_" + vo.getMoveUrl().replace(":", "_").replace("/", "_").replace("?", "_") + "_" + strUid; //파일명 특수기호 오류 처리 
+			qrCodeName2 = vo.getMoveUrl(); 
+			qrCodeName2 = new String(qrCodeName2.getBytes("UTF-8"), "ISO-8859-1");
+			
+			File file = new File(realPath);
+			if(!file.exists()) file.mkdirs(); // 폴더가 존재하지 않으면 폴더를 생성시켜준다,
+			
+			//qr코드 만들기
+			int qrCodeColor = 0xFF000000; //qr 코드의 글자색 - 검정색
+			int qrCodeBackColor = 0xFFFFFF;  //qr 코드의 배경색(바탕색) - 흰색
+			
+			QRCodeWriter qrCodeWriter = new QRCodeWriter();
+			BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeName2, BarcodeFormat.QR_CODE, 200 , 200);
+			
+			MatrixToImageConfig matrixToImageConfig = new MatrixToImageConfig(qrCodeColor,qrCodeBackColor );
+			BufferedImage bufferedImage = MatrixToImageWriter.toBufferedImage(bitMatrix, matrixToImageConfig);
+			
+			//생성된 QR코드 이미지를 그림파일로 만들어낸다.
+			ImageIO.write(bufferedImage, "png", new File(realPath + qrCodeName + ".png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (WriterException e) {
+			e.printStackTrace();
+		}
+		return qrCodeName;
+	}
+
+	@Override
+	public String setQrCodeCreate3(String realPath, QrCodeVO vo) {
+		String qrCodeName = "";
+		String qrCodeName2 = "";
+		
+		try {
+			Date today = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+			String strToday = sdf.format(today);
+			//UUID uid = UUID.randomUUID();
+			//String strUid = uid.toString().substring(0,2);
+			
+			qrCodeName = strToday + "_" + vo.getMovieName() + "_" + vo.getMovieDate() + "_" + vo.getMovieTime() + "_" + vo.getMovieAdult() + "_" + vo.getMovieChild() + "_" + vo.getMid(); 
+			qrCodeName2 = "구매일자" + strToday + "\n영화제목 : " + vo.getMovieName() + "\n상영일자 : " + vo.getMovieDate() + "\n상영시간 : " + vo.getMovieTime() + "\n성인 : " + vo.getMovieAdult() + "매\n어린이 : " + vo.getMovieChild() + "매\n구매자아이디 : " + vo.getMid(); 
+			qrCodeName2 = new String(qrCodeName2.getBytes("UTF-8"), "ISO-8859-1");
+			
+			File file = new File(realPath);
+			if(!file.exists()) file.mkdirs(); // 폴더가 존재하지 않으면 폴더를 생성시켜준다,
+			
+			//qr코드 만들기
+			int qrCodeColor = 0xFF000000; //qr 코드의 글자색 - 검정색
+			int qrCodeBackColor = 0xFFFFFF;  //qr 코드의 배경색(바탕색) - 흰색
+			
+			QRCodeWriter qrCodeWriter = new QRCodeWriter();
+			BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeName2, BarcodeFormat.QR_CODE, 200 , 200);
+			
+			MatrixToImageConfig matrixToImageConfig = new MatrixToImageConfig(qrCodeColor,qrCodeBackColor );
+			BufferedImage bufferedImage = MatrixToImageWriter.toBufferedImage(bitMatrix, matrixToImageConfig);
+			
+			//생성된 QR코드 이미지를 그림파일로 만들어낸다.
+			ImageIO.write(bufferedImage, "png", new File(realPath + qrCodeName + ".png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (WriterException e) {
+			e.printStackTrace();
+		}
+		return qrCodeName;
+	}
+
+	@Override
+	public String setQrCodeCreate4(String realPath, QrCodeVO vo) {
+		String qrCodeName = "";
+		String qrCodeName2 = "";
+		
+		try {
+			Date today = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+			String strToday = sdf.format(today);
+			//UUID uid = UUID.randomUUID();
+			//String strUid = uid.toString().substring(0,2);
+			
+			qrCodeName = strToday + "_" + vo.getMovieName() + "_" + vo.getMovieDate() + "_" + vo.getMovieTime() + "_" + vo.getMovieAdult() + "_" + vo.getMovieChild() + "_" + vo.getMid(); 
+			qrCodeName2 = "구매일자" + strToday + "\n영화제목 : " + vo.getMovieName() + "\n상영일자 : " + vo.getMovieDate() + "\n상영시간 : " + vo.getMovieTime() + "\n성인 : " + vo.getMovieAdult() + "매\n어린이 : " + vo.getMovieChild() + "매\n구매자아이디 : " + vo.getMid(); 
+			qrCodeName2 = new String(qrCodeName2.getBytes("UTF-8"), "ISO-8859-1");
+			
+			File file = new File(realPath);
+			if(!file.exists()) file.mkdirs(); // 폴더가 존재하지 않으면 폴더를 생성시켜준다,
+			
+			//qr코드 만들기
+			int qrCodeColor = 0xFF000000; //qr 코드의 글자색 - 검정색
+			int qrCodeBackColor = 0xFFFFFF;  //qr 코드의 배경색(바탕색) - 흰색
+			
+			QRCodeWriter qrCodeWriter = new QRCodeWriter();
+			BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeName2, BarcodeFormat.QR_CODE, 200 , 200);
+			
+			MatrixToImageConfig matrixToImageConfig = new MatrixToImageConfig(qrCodeColor,qrCodeBackColor );
+			BufferedImage bufferedImage = MatrixToImageWriter.toBufferedImage(bitMatrix, matrixToImageConfig);
+			
+			//생성된 QR코드 이미지를 그림파일로 만들어낸다.
+			ImageIO.write(bufferedImage, "png", new File(realPath + qrCodeName + ".png"));
+			
+			
+			// QR코드 생성후 정보를 DB에 저장시켜준다.
+			vo.setPublicShow(strToday);
+			vo.setQrCodeName(qrCodeName); 
+			studyDAO.setQrCodeCreate(vo);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (WriterException e) {
+			e.printStackTrace();
+		}
+		return qrCodeName;
+	}
+
+	@Override
+	public QrCodeVO getQrCodeSearch(String qrCode) {
+		return studyDAO.getQrCodeSearch(qrCode);
+	}
 	
 }

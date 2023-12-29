@@ -44,6 +44,7 @@ import com.spring.javaProjectS.service.StudyService;
 import com.spring.javaProjectS.vo.ChartVO;
 import com.spring.javaProjectS.vo.KakaoAddressVO;
 import com.spring.javaProjectS.vo.MailVO;
+import com.spring.javaProjectS.vo.QrCodeVO;
 import com.spring.javaProjectS.vo.UserVO;
 
 @Controller
@@ -492,10 +493,11 @@ public class StudyController {
 		return "study/captcha/captcha";
 	}
 	
-	// 캡차 이미지 만들기...
-	@ResponseBody
-	@RequestMapping(value = "/captcha/captchaImage", method = RequestMethod.POST)
-	public String chptchaImagePost(HttpSession session, HttpServletRequest request) {
+	//캡차 이미지 만들기...
+	//@ResponseBody
+	//@RequestMapping(value = "/captcha/captchaImage", method = RequestMethod.POST)
+	@RequestMapping(value = "/captcha/captchaImage", method = RequestMethod.GET)
+	public String chptchaImagePost(HttpSession session, HttpServletRequest request, Model model) {
 		// 시스템에 설정된 폰트 출력해보기
 //		Font[] fontList = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
 //		for(Font f : fontList) {
@@ -526,7 +528,11 @@ public class StudyController {
 			g.dispose();
 			
 			String realPath = request.getSession().getServletContext().getRealPath("/resources/data/study/");
-			ImageIO.write(image, "png", new File(realPath + "captcha.png"));
+			int temp = (int)(Math.random()*5) + 1;
+			String captchaImage = "captcha" + temp + ".png";
+			//ImageIO.write(image, "png", new File(realPath + "captcha.png"));
+			ImageIO.write(image, "png", new File(realPath + captchaImage));
+			model.addAttribute("captchaImage", captchaImage);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -539,6 +545,99 @@ public class StudyController {
 	public String chptchaPost(HttpSession session, String strCaptcha) {
 		if(strCaptcha.equals(session.getAttribute("sCaptcha").toString())) return "1";
 		else return "0";
+	}
+	
+	/*==========================================================================================================================*/
+	// QR Code 폼 보기
+	@RequestMapping(value = "/qrCode/qrCodeForm", method = RequestMethod.GET)
+	public String qrCodeFormGet() {
+		return "study/qrCode/qrCodeForm";
+	}
+	
+	//QR Code 개인 정보 등록 폼 보기
+	@RequestMapping(value = "/qrCode/qrCodeEx1", method = RequestMethod.GET)
+	public String qrCodeEx1Get() {
+		return "study/qrCode/qrCodeEx1";
+	}
+	
+	//QR Code 개인 정보 QR 코드 생성처리
+	@ResponseBody
+	@RequestMapping(value = "/qrCode/qrCodeEx1", method = RequestMethod.POST, produces="application/text; charset=utf8")
+	public String qrCodeEx1Post(HttpServletRequest request, QrCodeVO vo) {
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/qrCode/");
+		String qrCodeName = studyService.setQrCodeCreate1(realPath, vo);
+		return qrCodeName;
+	}
+	
+	/* ~~~~~~~~~~~~ */
+	//QR Code 소개사이트 주소 등록 폼 보기
+	@RequestMapping(value = "/qrCode/qrCodeEx2", method = RequestMethod.GET)
+	public String qrCodeEx2Get() {
+		return "study/qrCode/qrCodeEx2";
+	}
+	
+	//QR Code 소개사이트 QR 코드 생성처리
+	@ResponseBody
+	@RequestMapping(value = "/qrCode/qrCodeEx2", method = RequestMethod.POST, produces="application/text; charset=utf8")
+	public String qrCodeEx2Post(HttpServletRequest request, QrCodeVO vo) {
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/qrCode/");
+		String qrCodeName = studyService.setQrCodeCreate2(realPath, vo);
+		return qrCodeName;
+	}
+	
+	/* ~~~~~~~~~~~~ */
+	//QR Code 예매정보 등록 폼 보기
+	@RequestMapping(value = "/qrCode/qrCodeEx3", method = RequestMethod.GET)
+	public String qrCodeEx3Get() {
+		return "study/qrCode/qrCodeEx3";
+	}
+	
+	//QR Code 예매정보 QR 코드 생성처리
+	@ResponseBody
+	@RequestMapping(value = "/qrCode/qrCodeEx3", method = RequestMethod.POST, produces="application/text; charset=utf8")
+	public String qrCodeEx3Post(HttpServletRequest request, QrCodeVO vo) {
+		String movieTemp = vo.getMid() + "_";
+		movieTemp += vo.getMovieName() + "_";
+		movieTemp += vo.getMovieDate() + "_";
+		movieTemp += vo.getMovieTime() + "_A";
+		movieTemp += vo.getMovieAdult() + "_C";
+		movieTemp += vo.getMovieChild();
+		vo.setMovieTemp(movieTemp);
+		
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/qrCode/");
+		String qrCodeName = studyService.setQrCodeCreate3(realPath, vo);
+		return qrCodeName;
+	}
+	
+	/* ~~~~~~~~~~~~ */
+	//QR Code 예매정보를 DB에 저장할 등록 폼 보기
+	@RequestMapping(value = "/qrCode/qrCodeEx4", method = RequestMethod.GET)
+	public String qrCodeEx4Get() {
+		return "study/qrCode/qrCodeEx4";
+	}
+	
+	//QR Code 예매정보 QR 코드 생성 및 DB저장 처리
+	@ResponseBody
+	@RequestMapping(value = "/qrCode/qrCodeEx4", method = RequestMethod.POST, produces="application/text; charset=utf8")
+	public String qrCodeEx4Post(HttpServletRequest request, QrCodeVO vo) {
+		String movieTemp = vo.getMid() + "_";
+		movieTemp += vo.getMovieName() + "_";
+		movieTemp += vo.getMovieDate() + "_";
+		movieTemp += vo.getMovieTime() + "_A";
+		movieTemp += vo.getMovieAdult() + "_C";
+		movieTemp += vo.getMovieChild();
+		vo.setMovieTemp(movieTemp);
+		
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/qrCode/");
+		String qrCodeName = studyService.setQrCodeCreate4(realPath, vo);
+		return qrCodeName;
+	}
+	
+	//QR Code 예매정보를 DB에 검색하여 가져오기
+	@ResponseBody
+	@RequestMapping(value = "/qrCode/qrCodeSearch", method = RequestMethod.POST)
+	public QrCodeVO qrCodeSearchPost(String qrCode) {
+		return studyService.getQrCodeSearch(qrCode);
 	}
 	
 }

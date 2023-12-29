@@ -122,7 +122,7 @@ public class MemberController {
 		return "member/memberJoin";
 	}
 	
-	// 회원 Join폼 보여주기
+	// 회원 Join 처리
 	@RequestMapping(value = "/memberJoin", method = RequestMethod.POST)
 	public String memberJoinPost(MemberVO vo) {
 		// 아이디/닉네임 중복체크

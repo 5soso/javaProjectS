@@ -22,6 +22,7 @@
 	<resources mapping="/data/**" location="/resources/data/" />
 	<resources mapping="/study/**" location="/resources/data/study/" />
 	<resources mapping="/pds/**" location="/resources/data/pds/" />
+	<resources mapping="/qrCode/**" location="/resources/data/qrCode/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
