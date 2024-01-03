@@ -14,37 +14,47 @@
 	<beans:bean id="level3Interceptor" class="com.spring.javaProjectS.interceptor.Level3Interceptor" />	
 	
 	<interceptors>
-		<interceptor> <!-- 비회원(99)  -->
-			<mapping path="/member/**" />
-			<mapping path="/board/boardList" />
-			<exclude-mapping path="/member/memberLogin" />
-			<exclude-mapping path="/member/memberLogout" />
-			<exclude-mapping path="/member/memberIdCheck" />
-			<exclude-mapping path="/member/memberNickCheck" />
-			<exclude-mapping path="/member/memberJoin" />
-			<exclude-mapping path="/guest/**" />
-			<exclude-mapping path="/message/**" />
-			<beans:ref bean="level3Interceptor" />
+		<interceptor>
+		<!--  비회원  -->
+			<mapping path="/member/**"/>
+			<mapping path="/board/boardList"/>
+			<exclude-mapping path="/member/memberLogin"/>
+			<exclude-mapping path="/member/memberLogout"/>
+			<exclude-mapping path="/member/memberIdCheck"/>
+			<exclude-mapping path="/member/memberNickCheck"/>
+			<exclude-mapping path="/member/memberJoin"/>
+			<exclude-mapping path="/member/memberEmailCheck"/>
+			<exclude-mapping path="/member/memberEmailCheckOk"/>
+			<exclude-mapping path="/member/memberEmailSearch"/>
+			<exclude-mapping path="/member/kakaoLogin"/>
+			<exclude-mapping path="/guest/**"/>
+			<exclude-mapping path="/message/**"/>
+			<beans:ref bean="level3Interceptor"/>
 		</interceptor>
 		
-		<interceptor> <!-- 정회원(2)  -->
-			<mapping path="/board/**" />
-			<mapping path="/pds/**" />
-			<exclude-mapping path="/pds/pdsDownload" />
-			<exclude-mapping path="/board/boardList" />
-			<beans:ref bean="level2Interceptor" />
+		<interceptor>
+			<mapping path="/study/**"/>
+			<mapping path="/board/**"/>
+			<mapping path="/pds/pdsList"/>
+			<mapping path="/pds/pdsDownload"/>
+			<exclude-mapping path="/board/boardList"/>
+			<beans:ref bean="level2Interceptor"/>
+			<!--  정회원  -->
 		</interceptor>
 		
-		<interceptor> <!-- 우수회원(1)  -->
-			<mapping path="/pds/**" />
-			<exclude-mapping path="/pds/pdsList" />
-			<exclude-mapping path="/pds/pdsDownload" />
-			<beans:ref bean="level1Interceptor" />
+		<interceptor>
+			<mapping path="/pds/**"/>
+			<exclude-mapping path="/pds/pdsList"/>
+			<exclude-mapping path="/pds/pdsDownload"/>
+			<beans:ref bean="level1Interceptor"/>
+			<!--  우수회원  -->
 		</interceptor>
 		
-		<interceptor>  <!-- 관리자(0) -->
-			<mapping path="/admin/**" />
-			<beans:ref bean="level0Interceptor" />
+		<interceptor>
+			<!--  관리자  -->
+			<mapping path="/admin/**"/>
+			<beans:ref bean="level0Interceptor"/>
 		</interceptor>
+		
 	</interceptors>
 </beans:beans>

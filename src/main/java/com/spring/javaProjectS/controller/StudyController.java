@@ -640,5 +640,21 @@ public class StudyController {
 		return studyService.getQrCodeSearch(qrCode);
 	}
 	
+	/*============================================================================================================================*/
+	
+	//썸네일 연습폼 보기
+	@RequestMapping(value = "/thumbnail/thumbnailForm", method = RequestMethod.GET)
+	public String thumbnailFormGet() {
+		return "study/thumbnail/thumbnailForm";
+	}
+	
+	//썸네일 이미지 처리하기
+	@RequestMapping(value = "/thumbnail/thumbnailForm", method = RequestMethod.POST)
+	public String thumbnailFormPost(MultipartFile file) {
+		int res = studyService.setThumbnailCreate(file);
+		
+		if(res == 1) return "redirect:/message/thumbnailCreateOk";
+		else return "redirect:/message/thumbnailCreateNo";
+	}
 }
 

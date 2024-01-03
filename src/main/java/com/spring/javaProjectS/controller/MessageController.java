@@ -179,6 +179,28 @@ public class MessageController {
 			model.addAttribute("msg", "등록실패하였습니다.");
 			model.addAttribute("url", "pds/pdsInput"); 
 		}
+		/* 썸네일 */
+		else if(msgFlag.equals("thumbnailCreateOk")) {
+			model.addAttribute("msg", "썸네일 이미지 등록 성공~!!");
+			model.addAttribute("url", "study/thumbnail/thumbnailForm"); 
+		}
+		else if(msgFlag.equals("thumbnailCreateNo")) {
+			model.addAttribute("msg", "썸네일 이미지 등록 실패.");
+			model.addAttribute("url", "study/thumbnail/thumbnailForm"); 
+		}
+		/* 카카오로그인시 아이디 만들 때 중복체크 */
+		else if(msgFlag.equals("midSameSearch")) {
+			model.addAttribute("msg", "같은 아이디가 존재합니다.");
+			model.addAttribute("url", "member/memberLogin"); 
+		}
+		else if(msgFlag.equals("kakaoLoginOk")) {
+			model.addAttribute("msg", mid+"님 로그인되었습니다.");
+			model.addAttribute("url", "member/memberMain"); 
+		}
+		else if(msgFlag.equals("kakaoLogout")) {
+			model.addAttribute("msg", mid+"님 로그아웃었되습니다.");
+			model.addAttribute("url", "member/memberLogin"); 
+		}
 		
 		return "include/message";
 	}

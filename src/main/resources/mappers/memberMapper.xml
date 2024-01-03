@@ -14,11 +14,26 @@
     select * from member2 where email = #{email};
   </select>  
   
+  <select id="getMemberNickNameCheck" resultType="com.spring.javaProjectS.vo.MemberVO">
+  	select * from member2 where nickName = #{nickName} and email = #{email};
+  </select>
+  
+  
+
   
   
   <insert id="setMemberJoinOk">
     insert into member2 values (default,#{vo.mid},#{vo.pwd},#{vo.nickName},#{vo.name},#{vo.gender},#{vo.birthday},#{vo.tel},#{vo.address},#{vo.email},#{vo.homePage},#{vo.job},#{vo.hobby},#{vo.photo},#{vo.content},#{vo.userInfor},default,default,default,default,default,default,default);
   </insert>
+  
+  <insert id="setKakaoMemberInput">
+  	insert into member2 (mid,pwd,nickName,email,name) values (#{mid},#{pwd},#{nickName},#{email},#{nickName});
+  </insert>
+  
+  
+  
+  
+  
   
   
   <update id="setPwdChangeOk">

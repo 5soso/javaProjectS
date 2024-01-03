@@ -24,4 +24,8 @@ public interface MemberDAO {
 
 	public List<MemberVO> getMemberEmailSearch(@Param("email") String email);
 
+	public MemberVO getMemberNickNameCheck(@Param("nickName") String nickName, @Param("email") String email);
+
+	public void setKakaoMemberInput(@Param("mid") String mid, @Param("pwd") String pwd, @Param("nickName") String nickName, @Param("email") String email);
+
 }
