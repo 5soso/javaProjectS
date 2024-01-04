@@ -50,6 +50,8 @@
 	        <a href="${ctp}/study/qrCode/qrCodeForm" class="w3-bar-item w3-button">QR Code연습</a>
 	        <a href="${ctp}/errorPage/errorMain" class="w3-bar-item w3-button">error 연습</a>
 	        <a href="${ctp}/study/thumbnail/thumbnailForm" class="w3-bar-item w3-button">썸네일 연습</a>
+	        <a href="${ctp}/study/crawling/jsoup" class="w3-bar-item w3-button">크롤링 연습</a>
+	        <a href="${ctp}/study/crawling/selenium" class="w3-bar-item w3-button">셀레니움 연습</a>
 	      </div>
 	    </div>
 	    <div class="w3-dropdown-hover w3-hide-small">

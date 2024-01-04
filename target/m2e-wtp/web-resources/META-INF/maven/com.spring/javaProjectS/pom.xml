@@ -264,7 +264,21 @@
 		</dependency>
 		
 		
+		<!-- 웹크롤링을 위한 라이브러리(jsoup) -->
+		<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+		<dependency>
+	    <groupId>org.jsoup</groupId>
+	    <artifactId>jsoup</artifactId>
+	    <version>1.16.1</version>
+		</dependency>
 		
+		<!-- 웹크롤링을 위한 라이브러리(selenium) -->
+		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+		<dependency>
+	    <groupId>org.seleniumhq.selenium</groupId>
+	    <artifactId>selenium-java</artifactId>
+	    <version>4.10.0</version>
+		</dependency>
 		
 		
 		
