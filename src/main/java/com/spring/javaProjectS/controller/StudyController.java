@@ -40,7 +40,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,6 +57,7 @@ import com.spring.javaProjectS.vo.ChartVO;
 import com.spring.javaProjectS.vo.KakaoAddressVO;
 import com.spring.javaProjectS.vo.MailVO;
 import com.spring.javaProjectS.vo.QrCodeVO;
+import com.spring.javaProjectS.vo.TransactionVO;
 import com.spring.javaProjectS.vo.UserVO;
 
 @Controller
@@ -782,6 +786,54 @@ public class StudyController {
     return array;
   }
 	
-	
+  /* =============================================================================================================================== */
+  
+  // 트랜잭션
+  @RequestMapping(value = "/transaction/transaction", method = RequestMethod.GET)
+  public String transactionGet(Model model) {
+  	List<TransactionVO> vos = studyService.getTransactionList();
+  	List<TransactionVO> vos2 = studyService.getTransactionList2();
+  	
+  	model.addAttribute("vos" , vos);
+  	model.addAttribute("vos2" , vos2);
+  	
+  	return "study/transaction/transaction";
+  }
+  
+  // 트랜잭션을 통한 한개의 작업단위로 처리시켜준다.
+  @Transactional
+  @RequestMapping(value = "/transaction/transaction", method = RequestMethod.POST)
+  public String transactionPost(Model model, TransactionVO vo) {
+  	
+  	studyService.setTransactionUser1Input(vo);
+  	studyService.setTransactionUser2Input(vo);
+  	
+  	return "redirect:/study/transaction/transaction";
+  }
+  
+  // user와 user2의 일괄 삽입 작업처리 
+  @ResponseBody
+  @RequestMapping(value = "/transaction/transaction2", method = RequestMethod.POST)
+  public String transaction2Post(Model model, @Validated TransactionVO vo, BindingResult bindingResult) {
+//	public String transaction2Post(Model model, 
+//				String mid,
+//				String name,
+//				int age,
+//				String address,
+//				String job
+//			) {
+  	
+  	if(bindingResult.hasFieldErrors()) return "redirect:/message/validateNo";
+  	
+  	System.out.println("vo :" + vo);
+  	//System.out.println("mid :" + mid);
+  	//System.out.println("age :" + age);
+  	
+  	studyService.setTransactionUserInput(vo);
+  	//studyService.setTransactionUserInput2(mid,name,age,address,job);
+  	
+  	return "redirect:/study/transaction/transaction";
+  }
+  
 
 }

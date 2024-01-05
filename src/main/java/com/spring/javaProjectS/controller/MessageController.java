@@ -201,6 +201,10 @@ public class MessageController {
 			model.addAttribute("msg", mid+"님 로그아웃었되습니다.");
 			model.addAttribute("url", "member/memberLogin"); 
 		}
+		else if(msgFlag.equals("validateNo")) {
+			model.addAttribute("msg", "백엔드체크오류");
+			model.addAttribute("url", "/"); 
+		}
 		
 		return "include/message";
 	}
