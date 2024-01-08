@@ -5,51 +5,78 @@
 <html>
 <head>
   <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>adminLeft.jsp</title>
   <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
-  <style>
-
-	.sidebar {
-	  height: 100%;
-	  width: 180px;
-	  position: fixed;
-	  z-index: 1;
-	  top: 0;
-	  left: 0;
-	  background-color: #111;
-	  overflow-x: hidden;
-	  padding-top: 16px;
-	}
-	
-	.sidebar a {
-	  padding: 6px 8px 6px 16px;
-	  text-decoration: none;
-	  font-size: 20px;
-	  color: #818181;
-	  display: block;
-	}
-	
-	.sidebar a:hover {
-	  color: #f1f1f1;
-	}
-	
-	@media screen and (max-height: 450px) {
-	  .sidebar {padding-top: 15px;}
-	  .sidebar a {font-size: 18px;}
-	}
-</style>
 </head>
-<body>
-	<div class="sidebar">
-	  <a href="adminMain" target="_top">관리자</a><br/>
-	  <a href="${ctp}/member/memberMain" target="_blank"><i class="fa fa-fw fa-home"></i> Home</a>
-	  <a href="#services">Guest</a>
-	  <a href="#services">Board</a>
-	  <a href="#services">Pds</a>
-	  <a href="#clients"><i class="fa fa-fw fa-user"></i> Clients</a>
-	  <a href="#contact"><i class="fa fa-fw fa-envelope"></i> Contact</a>
-	</div>
-</body>	
+<body style="background-color:#efa; font-size:0.8em;">
+<p><br/></p>
+<div class="text-center card-hover" id="accordion">
+  <h5>관리자메뉴</h5>
+  <div class="card bg-success text-light">
+    <div class="m-0 p-2"><a href="${ctp}/" target="_top">홈으로</a></div>
+  </div>
+  <div class="card">
+    <div class="card-header bg-warning m-0 p-2">
+      <a class="card-link" data-toggle="collapse" href="#collapse1">회원관리</a>
+    </div>
+    <div id="collapse1" class="collapse" data-parent="#accordion">	<!-- 처음부터 메뉴 보이게 하려면?  class="collapse show" -->
+		  <div class="card-body p-2"><a href="${ctp}/admin/member/adminMemberList" target="adminContent">회원리스트</a></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header bg-warning m-0 p-2">
+      <a class="card-link" data-toggle="collapse" href="#collapse2">커뮤니티</a>
+    </div>
+    <div id="collapse2" class="collapse" data-parent="#accordion">
+		  <div class="card-body p-1"><a href="${ctp}/guest/guestList" target="adminContent">방명록</a></div>
+		  <div class="card-body p-1"><a href="${ctp}/board/boardList" target="adminContent">게시판</a></div>
+		  <div class="card-body p-1"><a href="${ctp}/pds/pdsList" target="adminContent">자료실</a></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header bg-warning p-2">
+      <a class="card-link" data-toggle="collapse" href="#collapse3">예약관리</a>
+    </div>
+    <div id="collapse3" class="collapse" data-parent="#accordion">
+      <div class="card-body p-1"><a href="#" target="adminContent">예약관리등록</a></div>
+      <div class="card-body p-1"><a href="#" target="adminContent">예약현황조회</a></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header bg-warning p-2">
+      <a class="card-link" data-toggle="collapse" href="#collapse4">상품관리</a>
+    </div>
+    <div id="collapse4" class="collapse" data-parent="#accordion">
+      <div class="card-body p-1"><a href="${ctp}/dbShop/dbCategory" target="adminContent">상품분류등록</a></div>
+      <div class="card-body p-1"><a href="${ctp}/dbShop/dbProduct" target="adminContent">상품등록관리</a></div>
+      <div class="card-body p-1"><a href="#" target="adminContent">상품등록조회</a></div>
+      <div class="card-body p-1"><a href="#" target="adminContent">옵션등록관리</a></div>
+      <div class="card-body p-1"><a href="#" target="adminContent">주문관리</a></div>
+      <div class="card-body p-1"><a href="#" target="adminContent">1:1문의</a></div>
+      <div class="card-body p-1"><a href="#" target="adminContent">메인이미지관리</a></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header bg-secondary p-2">
+      <div class="card-link"><a data-toggle="collapse" href="#collapse5">설문조사관리</a></div>
+    </div>
+    <div id="collapse5" class="collapse" data-parent="#accordion">
+      <div class="card-body p-1"><a href="#" target="adminContent">설문조사등록</a></div>
+      <div class="card-body p-1"><a href="#" target="adminContent">설문조사분석</a></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header bg-secondary p-2">
+      <div class="card-link"><a data-toggle="collapse" href="#collapse6">기타관리</a></div>
+    </div>
+    <div id="collapse6" class="collapse" data-parent="#accordion">
+      <div class="panel-body p-1"><a href="#" target="adminContent">공지사항관리</a></div>
+      <div class="panel-body p-1"><a href="#" target="adminContent">사이트분석</a></div>
+      <div class="panel-body p-1"><a href="#" target="adminContent">임시파일관리</a></div>
+    </div>
+  </div>
+</div>
+<p><br/></p>
+</body>
 </html>

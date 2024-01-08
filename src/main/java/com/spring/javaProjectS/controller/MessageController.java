@@ -205,6 +205,14 @@ public class MessageController {
 			model.addAttribute("msg", "백엔드체크오류");
 			model.addAttribute("url", "/"); 
 		}
+		else if(msgFlag.equals("dbProductInputOk")) {
+			model.addAttribute("msg", "상품이 등록되었습니다.");
+			model.addAttribute("url", "dbShop/dbShopList"); 
+		}
+		else if(msgFlag.equals("dbProductInputNo")) {
+			model.addAttribute("msg", "상품 등록 실패");
+			model.addAttribute("url", "dbShop/dbProduct"); 
+		}
 		
 		return "include/message";
 	}

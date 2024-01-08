@@ -5,14 +5,20 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>adminContent.jsp</title>
   <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
 </head>
 <body>
 <p><br/></p>
 <div class="container">
-  <h2>adminContent.jsp 입니다</h2>
-  <p>관리자메인 화면과 겹치는 문제....</p>
+  <p>방명록 새글 : ???</p>
+  <p>게시글 새글 : ???</p>
+  <p>신규등록회원 : ???</p>
+  <hr/>
+  <div>
+    <p>사이트분석(차트)</p>
+  </div>
 </div>
 <p><br/></p>
 </body>
