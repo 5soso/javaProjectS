@@ -18,6 +18,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.javaProjectS.dao.DbShopDAO;
+import com.spring.javaProjectS.vo.DbOptionVO;
 import com.spring.javaProjectS.vo.DbProductVO;
 
 @Service
@@ -159,10 +160,9 @@ public class DbShopServiceImpl implements DbShopService {
     
     int maxIdx = 1;
     DbProductVO maxVo = dbShopDAO.getProductMaxIdx();
-    if(maxVo != null) {
-      maxIdx = maxVo.getIdx() + 1;
-      vo.setIdx(maxIdx);
-    }
+    if(maxVo != null) maxIdx = maxVo.getIdx() + 1;
+    
+    vo.setIdx(maxIdx);
     vo.setProductCode(vo.getCategoryMainCode()+vo.getCategoryMiddleCode()+vo.getCategorySubCode()+maxIdx);
     res = dbShopDAO.setDbProductInput(vo);
     return res;
@@ -209,5 +209,50 @@ public class DbShopServiceImpl implements DbShopService {
     fos.write(data);
     fos.close();
   }
+
+	@Override
+	public List<DbProductVO> getSubTitle() {
+		return dbShopDAO.getSubTitle();
+	}
+	
+	@Override
+	public List<DbProductVO> getDbShopList(String part) {
+		return dbShopDAO.getDbShopList(part);
+	}
+
+	@Override
+	public DbProductVO getDbShopProduct(int idx) {
+		return dbShopDAO.getDbShopProduct(idx);
+	}
+
+	@Override
+	public List<DbProductVO> getCategoryProductNameAjax(String categoryMainCode, String categoryMiddleCode, String categorySubCode) {
+		return dbShopDAO.getCategoryProductNameAjax(categoryMainCode, categoryMiddleCode, categorySubCode);
+	}
+
+	@Override
+	public DbProductVO getProductInfor(String productName) {
+		return dbShopDAO.getProductInfor(productName);
+	}
+
+	@Override
+	public List<DbOptionVO> getOptionList(int productIdx) {
+		return dbShopDAO.getOptionList(productIdx);
+	}
+
+	@Override
+	public int getOptionSame(int productIdx, String optionName) {
+		return dbShopDAO.getOptionSame(productIdx, optionName);
+	}
+
+	@Override
+	public int setDbOptionInput(DbOptionVO vo) {
+		return dbShopDAO.setDbOptionInput(vo);
+	}
+
+	@Override
+	public List<DbOptionVO> getDbShopOption(int idx) {
+		return dbShopDAO.getDbShopOption(idx);
+	}
 
 }

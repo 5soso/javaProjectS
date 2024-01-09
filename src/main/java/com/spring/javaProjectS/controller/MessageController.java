@@ -205,6 +205,7 @@ public class MessageController {
 			model.addAttribute("msg", "백엔드체크오류");
 			model.addAttribute("url", "/"); 
 		}
+		/* 상품 등록하기 */
 		else if(msgFlag.equals("dbProductInputOk")) {
 			model.addAttribute("msg", "상품이 등록되었습니다.");
 			model.addAttribute("url", "dbShop/dbShopList"); 
@@ -212,6 +213,14 @@ public class MessageController {
 		else if(msgFlag.equals("dbProductInputNo")) {
 			model.addAttribute("msg", "상품 등록 실패");
 			model.addAttribute("url", "dbShop/dbProduct"); 
+		}
+		else if(msgFlag.equals("dbOptionInputOk")) {
+			model.addAttribute("msg", "상품 옵션이 등록되었습니다.");
+			model.addAttribute("url", "dbShop/dbOption"); 
+		}
+		else if(msgFlag.equals("dbOptionInputNo")) {
+			model.addAttribute("msg", "옵션 등록 실패");
+			model.addAttribute("url", "dbShop/dbOption"); 
 		}
 		
 		return "include/message";

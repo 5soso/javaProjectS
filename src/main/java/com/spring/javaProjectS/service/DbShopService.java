@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.spring.javaProjectS.vo.DbOptionVO;
 import com.spring.javaProjectS.vo.DbProductVO;
 
 public interface DbShopService {
@@ -39,5 +40,23 @@ public interface DbShopService {
 	public int setCategorySubDelete(String categorySubCode);
 
 	public int imgCheckProductInput(MultipartFile file, DbProductVO vo);
+
+	public List<DbProductVO> getSubTitle();
+	
+	public List<DbProductVO> getDbShopList(String part);
+
+	public DbProductVO getDbShopProduct(int idx);
+
+	public List<DbProductVO> getCategoryProductNameAjax(String categoryMainCode, String categoryMiddleCode, String categorySubCode);
+
+	public DbProductVO getProductInfor(String productName);
+
+	public List<DbOptionVO> getOptionList(int productIdx);
+
+	public int getOptionSame(int productIdx, String optionName);
+
+	public int setDbOptionInput(DbOptionVO vo);
+
+	public List<DbOptionVO> getDbShopOption(int idx);
 
 }
