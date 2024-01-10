@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.spring.javaProjectS.dao.BoardDAO;
 import com.spring.javaProjectS.dao.PdsDAO;
+import com.spring.javaProjectS.vo.PageVO;
 
 @Service
 public class PageProcess {

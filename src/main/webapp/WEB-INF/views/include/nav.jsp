@@ -59,7 +59,7 @@
 	      <button class="w3-padding-large w3-button" title="More">Shopping mall <i class="fa fa-caret-down"></i></button>     
 	      <div class="w3-dropdown-content w3-bar-block w3-card-4">
 	        <a href="${ctp}/dbShop/dbProductList" class="w3-bar-item w3-button">상품리스트</a>
-	        <a href="#" class="w3-bar-item w3-button">장바구니</a>
+	        <a href="${ctp}/dbShop/dbCartList" class="w3-bar-item w3-button">장바구니</a>
 	       <a href="#" class="w3-bar-item w3-button">주문(배송)현황</a>
 	        <a href="#" class="w3-bar-item w3-button">결제연습</a>
 	        <a href="#" class="w3-bar-item w3-button">QnA</a>

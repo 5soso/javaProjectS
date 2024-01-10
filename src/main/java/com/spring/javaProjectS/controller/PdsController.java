@@ -26,8 +26,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaProjectS.common.SecurityUtil;
 import com.spring.javaProjectS.pagination.PageProcess;
-import com.spring.javaProjectS.pagination.PageVO;
 import com.spring.javaProjectS.service.PdsService;
+import com.spring.javaProjectS.vo.PageVO;
 import com.spring.javaProjectS.vo.PdsVO;
 
 @Controller

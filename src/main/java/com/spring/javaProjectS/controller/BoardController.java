@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.javaProjectS.pagination.PageProcess;
-import com.spring.javaProjectS.pagination.PageVO;
 import com.spring.javaProjectS.service.BoardService;
 import com.spring.javaProjectS.vo.Board2ReplyVO;
 import com.spring.javaProjectS.vo.BoardVO;
+import com.spring.javaProjectS.vo.PageVO;
 
 @Controller
 @RequestMapping("/board")

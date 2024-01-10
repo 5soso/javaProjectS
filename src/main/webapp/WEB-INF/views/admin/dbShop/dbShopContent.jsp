@@ -50,7 +50,7 @@
 		  </div>
 		  <br/>
 		  <div class="text-right p-2">
-		    <input type="button" value="옵션등록" onclick="location.href='${ctp}/dbShop/dbOption2?productName=${productVO.productName}';" class="btn btn-success"/>
+		    <input type="button" value="옵션등록" onclick="location.href='${ctp}/dbShop/dbOption?productName=${productVO.productName}';" class="btn btn-success"/>
 		    <input type="button" value="돌아가기" onclick="location.href='${ctp}/dbShop/dbShopList';" class="btn btn-primary"/>
 		  </div>
 		</div>

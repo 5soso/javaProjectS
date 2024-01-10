@@ -87,11 +87,27 @@
   <select id="getOptionSame" resultType="int">
     select count(*) from dbOption where productIdx=#{productIdx} and optionName=#{optionName};
   </select>
-
+  
   <select id="getDbShopOption" resultType="com.spring.javaProjectS.vo.DbOptionVO">
   	select * from dbOption where productIdx = #{idx} order by idx;
   </select>
-
+  
+  <select id="getDbCartList" resultType="com.spring.javaProjectS.vo.DbCartVO">
+  	select * from dbCart where mid=#{mid} order by idx;
+  </select>
+  
+  <select id="getDbCartProductOptionSearch" resultType="com.spring.javaProjectS.vo.DbCartVO">
+  	select * from dbCart where productName=#{productName} and optionName=#{optionName} and mid=#{mid};
+  </select>
+  
+  <select id="getOrderMaxIdx" resultType="com.spring.javaProjectS.vo.DbOrderVO">
+  	select max(idx) as maxIdx from dbOrder;
+  </select>
+  
+  <select id="getCartIdx" resultType="com.spring.javaProjectS.vo.DbCartVO">
+  	select * from dbCart where idx = #{idx};
+  </select>
+  
   
   
   
@@ -110,11 +126,21 @@
   <insert id="setDbProductInput">
     insert into dbProduct value (#{vo.idx},#{vo.categoryMainCode},#{vo.categoryMiddleCode},#{vo.categorySubCode},#{vo.productCode},#{vo.productName},#{vo.detail},#{vo.mainPrice},#{vo.fSName},#{vo.content});
   </insert>
-  
- 	<insert id="setDbOptionInput">
+
+  <insert id="setDbOptionInput">
     insert into dbOption values (default,#{vo.productIdx},#{vo.optionName},#{vo.optionPrice});
   </insert>
+  
+  <insert id="dbShopCartInput">
+    insert into dbCart values (default,default,#{vo.mid},#{vo.productIdx},#{vo.productName},#{vo.mainPrice},#{vo.thumbImg},#{vo.optionIdx},#{vo.optionName},#{vo.optionPrice},#{vo.optionNum},#{vo.totalPrice});
+  </insert>
 
+
+
+  <update id="dbShopCartUpdate">
+    update dbCart set optionNum=#{vo.optionNum},totalPrice=totalPrice+#{vo.totalPrice} where productName=#{vo.productName} and optionName=#{vo.optionName};
+  </update>
+  
 
 
 
@@ -129,5 +155,13 @@
 	<delete id="setCategorySubDelete">
 	  delete from categorySub where categorySubCode = #{categorySubCode};
 	</delete>
-	  
+	
+  <delete id="setOptionDelete">
+    delete from dbOption where idx = #{idx};
+  </delete>
+  
+  <delete id="dbCartDelete">
+  	delete from dbCart where idx = #{idx};
+  </delete>
+  
 </mapper>

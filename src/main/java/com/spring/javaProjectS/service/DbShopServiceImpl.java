@@ -18,7 +18,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.javaProjectS.dao.DbShopDAO;
+import com.spring.javaProjectS.vo.DbCartVO;
 import com.spring.javaProjectS.vo.DbOptionVO;
+import com.spring.javaProjectS.vo.DbOrderVO;
 import com.spring.javaProjectS.vo.DbProductVO;
 
 @Service
@@ -253,6 +255,46 @@ public class DbShopServiceImpl implements DbShopService {
 	@Override
 	public List<DbOptionVO> getDbShopOption(int idx) {
 		return dbShopDAO.getDbShopOption(idx);
+	}
+
+	@Override
+	public int setOptionDelete(int idx) {
+		return dbShopDAO.setOptionDelete(idx);
+	}
+
+	@Override
+	public List<DbCartVO> getDbCartList(String mid) {
+		return dbShopDAO.getDbCartList(mid);
+	}
+
+	@Override
+	public DbCartVO getDbCartProductOptionSearch(String productName, String optionName, String mid) {
+		return dbShopDAO.getDbCartProductOptionSearch(productName, optionName, mid);
+	}
+
+	@Override
+	public int dbShopCartUpdate(DbCartVO vo) {
+		return dbShopDAO.dbShopCartUpdate(vo);
+	}
+
+	@Override
+	public int dbShopCartInput(DbCartVO vo) {
+		return dbShopDAO.dbShopCartInput(vo);
+	}
+
+	@Override
+	public int dbCartDelete(int idx) {
+		return dbShopDAO.dbCartDelete(idx);
+	}
+
+	@Override
+	public DbOrderVO getOrderMaxIdx() {
+		return dbShopDAO.getOrderMaxIdx();
+	}
+
+	@Override
+	public DbCartVO getCartIdx(int idx) {
+		return dbShopDAO.getCartIdx(idx);
 	}
 
 }

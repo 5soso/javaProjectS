@@ -1,4 +1,4 @@
-package com.spring.javaProjectS.pagination;
+package com.spring.javaProjectS.vo;
 
 import lombok.Data;
 

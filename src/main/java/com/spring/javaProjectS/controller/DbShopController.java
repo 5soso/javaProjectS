@@ -5,11 +5,13 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,8 +23,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.javaProjectS.service.DbShopService;
+import com.spring.javaProjectS.service.MemberService;
+import com.spring.javaProjectS.vo.DbCartVO;
 import com.spring.javaProjectS.vo.DbOptionVO;
+import com.spring.javaProjectS.vo.DbOrderVO;
 import com.spring.javaProjectS.vo.DbProductVO;
+import com.spring.javaProjectS.vo.MemberVO;
 
 @Controller
 @RequestMapping("/dbShop")
@@ -30,6 +36,9 @@ public class DbShopController {
 
 	@Autowired
 	DbShopService dbShopService;
+	
+	@Autowired
+	MemberService memberService;
 	
 	// 분류 등록폼 호출 및 출력
 	@RequestMapping(value = "/dbCategory", method = RequestMethod.GET)
@@ -194,7 +203,6 @@ public class DbShopController {
 
 		// 전체 상품리스트 가져오기
 		List<DbProductVO> productVOS = dbShopService.getDbShopList(part);
-		System.out.println("productVOS : " +  productVOS);
 		model.addAttribute("productVOS", productVOS);
 		
 		return "admin/dbShop/dbShopList";
@@ -203,8 +211,8 @@ public class DbShopController {
 	// 관리자에서 진열된 상품을 클릭하였을경우에 해당 상품의 상세내역 보여주기
 	@RequestMapping(value = "/dbShopContent", method = RequestMethod.GET)
 	public String dbShopContentGet(Model model, int idx) {
-		DbProductVO productVO = dbShopService.getDbShopProduct(idx);		// 상품 1건의 정보를 불러온다.
-		List<DbOptionVO> optionVOS = dbShopService.getDbShopOption(idx);
+		DbProductVO productVO = dbShopService.getDbShopProduct(idx);			// 상품 1건의 정보를 불러온다.
+		List<DbOptionVO> optionVOS = dbShopService.getDbShopOption(idx);	// 해당 상품의 모든 옵션 정보를 가져온다.
 		
 		model.addAttribute("productVO", productVO);
 		model.addAttribute("optionVOS", optionVOS);
@@ -257,17 +265,27 @@ public class DbShopController {
 			
 			res = dbShopService.setDbOptionInput(vo);
 		}
-		
 		if(res != 0) return "redirect:/message/dbOptionInputOk";
 		else return "redirect:/message/dbOptionInputNo";
 	}
 	
+	// 옵션 등록창에서 옵션리스트를 확인후 필요없는 옵션항목을 삭제처리..
+	@ResponseBody
+	@RequestMapping(value="/optionDelete", method = RequestMethod.POST)
+	public String optionDeletePost(int idx) {
+		int res = dbShopService.setOptionDelete(idx);
+		return res + "";
+	}
+	
+	
+		
+/*  =========== 위쪽은 관리자 처리 화면입니다.......  ====================================================================================== */
 	
 	
 	
-	/* ======================================================================================================================*/
+/*  =========== 아래쪽은 사용자(고객) 처리 화면입니다.......  ====================================================================================== */
 	
-	//등록된 상품 진열하기(보여주기) - 고객화면에 출력
+	// 등록된 상품 진열하기(보여주기) - 고객화면에 출력
 	@RequestMapping(value = "/dbProductList", method = RequestMethod.GET)
 	public String dbProductListGet(Model model,
 			@RequestParam(name="part", defaultValue = "전체", required = false) String part) {
@@ -278,17 +296,125 @@ public class DbShopController {
 
 		// 전체 상품리스트 가져오기
 		List<DbProductVO> productVOS = dbShopService.getDbShopList(part);
-		System.out.println("productVOS : " +  productVOS);
 		model.addAttribute("productVOS", productVOS);
 		
-		return "admin/dbShop/dbProductList";
+		return "dbShop/dbProductList";
 	}
 	
+  // 진열된 상품클릭시 해당상품의 상세정보 보여주기(사용자(고객)화면에서 보여주기)
+	@RequestMapping(value="/dbProductContent", method=RequestMethod.GET)
+	public String dbProductContentGet(int idx, Model model) {
+		DbProductVO productVo = dbShopService.getDbShopProduct(idx);			// 상품의 상세정보 불러오기
+		List<DbOptionVO> optionVos = dbShopService.getDbShopOption(idx);	// 옵션의 모든 정보 불러오기
+		
+		model.addAttribute("productVo", productVo);
+		model.addAttribute("optionVos", optionVos);
+		
+		return "dbShop/dbProductContent";
+	}
+
+	// 상품 상세정보보기창에서 '장바구니'버튼을 클릭시에 처리하는곳
+	@RequestMapping(value="/dbProductContent", method=RequestMethod.POST)
+	public String dbProductContentPost(DbCartVO vo, HttpSession session, String flag) {
+		String mid = (String) session.getAttribute("sMid");
+		DbCartVO resVo = dbShopService.getDbCartProductOptionSearch(vo.getProductName(), vo.getOptionName(), mid);
+		int res = 0;
+		if(resVo != null) {
+			String[] voOptionNums = vo.getOptionNum().split(",");
+			String[] resOptionNums = resVo.getOptionNum().split(",");
+			int[] nums = new int[99];
+			String strNums = "";
+			for(int i=0; i<voOptionNums.length; i++) {
+				nums[i] += (Integer.parseInt(voOptionNums[i]) + Integer.parseInt(resOptionNums[i]));
+				strNums += nums[i];
+				if(i < nums.length - 1) strNums += ",";
+			}
+			vo.setOptionNum(strNums);
+			res = dbShopService.dbShopCartUpdate(vo);
+		}
+		else {
+			res = dbShopService.dbShopCartInput(vo);
+		}
+		
+		if(res != 0) {
+			if(flag.equals("order")) {
+				return "redirect:/message/cartOrderOk";
+			}
+			else {
+				return "redirect:/message/cartInputOk";
+			}
+		}
+		else return "redirect:/message/cartOrderNo";
+	}
 	
+	// 장바구니 보기
+	@RequestMapping(value="/dbCartList", method=RequestMethod.GET)
+	public String dbCartGet(HttpSession session, DbCartVO vo, Model model) {
+		String mid = (String) session.getAttribute("sMid");
+		List<DbCartVO> vos = dbShopService.getDbCartList(mid);
+		
+		if(vos.size() == 0) {
+			return "redirect:/message/cartEmpty";
+		}
+		
+		model.addAttribute("cartListVOS", vos);
+		return "dbShop/dbCartList";
+	}
 	
+	// 장바구니에서 주문 취소한 상품을 장바구니에서 삭제시켜주기
+	@ResponseBody
+	@RequestMapping(value="/dbCartDelete", method=RequestMethod.POST)
+	public String dbCartDeleteGet(int idx) {
+		int res = dbShopService.dbCartDelete(idx);
+		return res + "";
+	}
 	
-	
-	
-	
-	
+	// 장바구니에서 '주문하기' 버튼을 클릭시에 처리할 부분
+	@RequestMapping(value="/dbCartList", method=RequestMethod.POST)
+	public String dbCartListPost(HttpServletRequest request, HttpSession session, Model model,
+			@RequestParam(name="baesong", defaultValue="0", required=false) int baesong) {
+		String mid = (String) session.getAttribute("sMid");
+		
+		// 주문한 상품에 대한 '고유번호'를 만들어준다.
+		DbOrderVO maxIdx = dbShopService.getOrderMaxIdx();
+		int idx = 1;
+    if(maxIdx != null) idx = maxIdx.getMaxIdx() + 1;
+
+    Date today = new Date();
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+    String orderIdx = sdf.format(today) + idx;
+
+    // 장바구니에서 구매를 위해 선택한 모든 항목들은 배열로 넘어온다.
+    String[] idxChecked = request.getParameterValues("idxChecked");
+
+    DbCartVO cartVo = new DbCartVO();
+    List<DbOrderVO> orderVOS = new ArrayList<DbOrderVO>();
+    
+    for(String strIdx : idxChecked) {
+      cartVo = dbShopService.getCartIdx(Integer.parseInt(strIdx));
+      DbOrderVO orderVo = new DbOrderVO();
+      orderVo.setProductIdx(cartVo.getProductIdx());
+      orderVo.setProductName(cartVo.getProductName());
+      orderVo.setMainPrice(cartVo.getMainPrice());
+      orderVo.setThumbImg(cartVo.getThumbImg());
+      orderVo.setOptionName(cartVo.getOptionName());
+      orderVo.setOptionPrice(cartVo.getOptionPrice());
+      orderVo.setOptionNum(cartVo.getOptionNum());
+      orderVo.setTotalPrice(cartVo.getTotalPrice());
+      orderVo.setCartIdx(cartVo.getIdx());
+      orderVo.setBaesong(baesong);
+
+      orderVo.setOrderIdx(orderIdx); 
+      orderVo.setMid(mid);
+
+      orderVOS.add(orderVo);
+    }
+    session.setAttribute("sOrderVOS", orderVOS);
+    
+    // 배송처리를 위한 현재 로그인한 아이디에 해당하는 고객의 정보를 member2에서 가져온다.
+    MemberVO memberVO = memberService.getMemberIdCheck(mid);
+    model.addAttribute("memberVO", memberVO);
+		
+		return "dbShop/dbOrder";
+	}
 }
