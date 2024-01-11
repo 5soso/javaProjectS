@@ -53,6 +53,7 @@
 	        <a href="${ctp}/study/crawling/jsoup" class="w3-bar-item w3-button">크롤링(jsoup)</a>
 	        <a href="${ctp}/study/crawling/selenium" class="w3-bar-item w3-button">크롤링(selenium()</a>
 	        <a href="${ctp}/study/transaction/transaction" class="w3-bar-item w3-button">트랜잭션</a>
+	        <a href="${ctp}/study/payment/payment" class="w3-bar-item w3-button">결제연습</a>
 	      </div>
 	    </div>
 	    <div class="w3-dropdown-hover w3-hide-small">
@@ -60,8 +61,8 @@
 	      <div class="w3-dropdown-content w3-bar-block w3-card-4">
 	        <a href="${ctp}/dbShop/dbProductList" class="w3-bar-item w3-button">상품리스트</a>
 	        <a href="${ctp}/dbShop/dbCartList" class="w3-bar-item w3-button">장바구니</a>
+	     		<a href="${ctp}/payment/payment" class="w3-bar-item w3-button">결제연습</a>
 	       <a href="#" class="w3-bar-item w3-button">주문(배송)현황</a>
-	        <a href="#" class="w3-bar-item w3-button">결제연습</a>
 	        <a href="#" class="w3-bar-item w3-button">QnA</a>
 	        <a href="#" class="w3-bar-item w3-button">1:1문의</a>
 	      </div>

@@ -204,7 +204,15 @@
       <button type="button" class="btn btn-info" onclick="location.href='${ctp}/dbShop/dbCartList';">장바구니보기</button> &nbsp;
       <button type="button" class="btn btn-success" onClick="location.href='${ctp}/dbShop/dbProductList';">계속 쇼핑하기</button>
     </div>
-
+		<input type="hidden" name="orderVos" value="${orderVos}"/>
+	  <input type="hidden" name="orderIdx" value="${orderIdx}"/>
+	  <input type="hidden" name="orderTotalPrice" value="${orderTotalPrice}"/>
+	  <input type="hidden" name="mid" value="${sMid}"/>
+	  <input type="hidden" name="payment" id="payment"/>
+	  <input type="hidden" name="payMethod" id="payMethod"/>
+	  
+	  <%-- <input type="hidden" name="name" value="${memberVO.name}"/> --%>
+	  <input type="hidden" name="name" value="${sOrderVOS[0].productName}"/>
   </form>
 </div>
 <p><br/></p>
